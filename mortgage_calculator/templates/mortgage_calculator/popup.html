@@ -1,0 +1,80 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'mortgage_calculator/mortgage.css' %}">
+
+<!-- You can put multiple buttons on the same page -->
+<button
+  type="button"
+  class="mc-trigger"
+  data-mc-principal="300000"
+  aria-haspopup="dialog"
+>
+  💰 Mortgage Calculator
+</button>
+
+<!-- Modal (one per page is enough) -->
+<div class="mc-overlay" data-mc-overlay aria-hidden="true">
+  <div class="mc-modal" role="dialog" aria-modal="true" aria-label="Mortgage calculator">
+    <div class="mc-top">
+      <div>
+        <div class="mc-title">Mortgage Calculator</div>
+        <div class="mc-subtitle">Estimate your monthly payment</div>
+      </div>
+      <button type="button" class="mc-x" data-mc-close aria-label="Close">✕</button>
+    </div>
+
+    <div class="mc-body">
+      <div class="mc-grid">
+        <div class="mc-field">
+          <label>Loan amount</label>
+          <input class="mc-principal" type="number" value="300000" step="1000">
+        </div>
+
+        <div class="mc-field">
+          <label>Interest rate (%)</label>
+          <input class="mc-rate" type="number" value="4.99" step="0.01">
+        </div>
+
+        <div class="mc-field">
+          <label>Term (years)</label>
+          <input class="mc-years" type="number" value="30" step="1">
+        </div>
+      </div>
+
+      <div class="mc-actions">
+        <button class="mc-btn" type="button" data-mc-calc>Calculate</button>
+        <div class="mc-output">
+          <div class="mc-output-label">Monthly payment</div>
+          <div class="mc-output-value">$<span class="mc-payment">0.00</span></div>
+        </div>
+      </div>
+
+      <div class="mc-error" role="alert"></div>
+    </div>
+
+    <div class="mc-foot">
+      <span class="mc-foot-note">Tip: click outside or press ESC to close.</span>
+    </div>
+
+    <div class="mc-card" data-mc-endpoint="{% url 'mortgage_calculator:calc_api' %}" hidden></div>
+  </div>
+</div>
+
+<script>
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  window.MC_CSRF_TOKEN = getCookie('csrftoken');
+</script>
+
+<script src="{% static 'mortgage_calculator/mortgage_modal_better.js' %}"></script>

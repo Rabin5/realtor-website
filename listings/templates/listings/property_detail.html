@@ -1,0 +1,706 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ property.name }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Gray-Yellow Color Fusion */
+        :root {
+            --gray-primary: #2d3748;
+            --gray-light: #4a5568;
+            --gray-dark: #1a202c;
+            --yellow-primary: #d69e2e;
+            --yellow-light: #ecc94b;
+            --yellow-dark: #b7791f;
+            --fusion-gradient: linear-gradient(135deg, #2d3748 0%, #4a5568 50%, #d69e2e 100%);
+            --fusion-bg: linear-gradient(135deg, #f7fafc 0%, #edf2f7 50%, #fefcbf 100%);
+        }
+
+        /* Glassmorphism Effects */
+        .glass {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(45, 55, 72, 0.3);
+        }
+        
+        .glass-dark {
+            background: rgba(45, 55, 72, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(214, 158, 46, 0.3);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 12px 40px 0 rgba(45, 55, 72, 0.25);
+        }
+        
+        .glass-nav {
+            background: rgba(45, 55, 72, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(214, 158, 46, 0.4);
+        }
+        
+        .glass-thumbnail {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Body with Gray-Yellow Fusion */
+        body {
+            background: var(--fusion-bg);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Main container glass effect */
+        .main-glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(45, 55, 72, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Map container glass effect */
+        .map-glass {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        
+        /* Text colors for gray-yellow theme */
+        .text-glass {
+            color: var(--gray-dark);
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+        }
+        
+        .text-glass-light {
+            color: var(--gray-light);
+            opacity: 0.9;
+        }
+        
+        .text-yellow-glow {
+            color: var(--yellow-dark);
+            text-shadow: 0 0 10px rgba(214, 158, 46, 0.3);
+        }
+
+        /* Map styling */
+        #googleMap {
+            width: 100%;
+            height: 400px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        
+        /* Image placeholders with gray-yellow theme */
+        .image-placeholder {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, var(--gray-light) 0%, var(--yellow-primary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            border-radius: 20px;
+        }
+        
+        /* Thumbnail styles */
+        .thumbnail {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 12px;
+            cursor: pointer;
+            opacity: 0.7;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .thumbnail.active, .thumbnail:hover {
+            opacity: 1;
+            border: 2px solid var(--yellow-primary);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(214, 158, 46, 0.3);
+        }
+        
+        /* Gallery navigation */
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(45, 55, 72, 0.8);
+            color: var(--yellow-light);
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .gallery-nav:hover {
+            transform: translateY(-50%) scale(1.1);
+            background: rgba(45, 55, 72, 0.9);
+            color: white;
+        }
+        
+        .gallery-nav.prev {
+            left: 25px;
+        }
+        
+        .gallery-nav.next {
+            right: 25px;
+        }
+        
+        /* Image transitions */
+        #mainImage {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            border-radius: 20px;
+        }
+        
+        #imageModal {
+            transition: opacity 0.3s ease;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Floating animation for cards */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Enhanced hover effects */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 20px 40px rgba(45, 55, 72, 0.15),
+                0 0 0 1px rgba(214, 158, 46, 0.1);
+        }
+        
+        /* Button styles with gray-yellow theme */
+        .btn-glass {
+            background: linear-gradient(135deg, var(--gray-primary) 0%, var(--yellow-dark) 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(214, 158, 46, 0.3);
+        }
+        
+        .btn-glass:hover {
+            background: linear-gradient(135deg, var(--gray-dark) 0%, var(--yellow-primary) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(214, 158, 46, 0.4);
+        }
+
+        /* Price tag styling */
+        .price-tag {
+            background: linear-gradient(135deg, var(--yellow-primary) 0%, var(--yellow-dark) 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(214, 158, 46, 0.3);
+        }
+
+        /* Feature icons */
+        .feature-icon {
+            background: rgba(214, 158, 46, 0.1);
+            border: 1px solid rgba(214, 158, 46, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(45, 55, 72, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--gray-light), var(--yellow-primary));
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(var(--yellow-primary), var(--gray-light));
+        }
+    </style>
+</head>
+<body class="p-6">
+    <div class="max-w-6xl mx-auto main-glass rounded-3xl overflow-hidden float-animation">
+        
+        <!-- Image Gallery Section -->
+        <div class="relative">
+            <div class="p-8">
+                <h2 class="text-3xl font-bold mb-6 text-glass">🏡 {{ property.name }}</h2>
+                
+                {% if property.images %}
+                    <!-- Main Image with Counter -->
+                    <div class="relative mb-8">
+                        <img id="mainImage" 
+                             src="/media/{{ property.images.0 }}" 
+                             alt="{{ property.name }}"
+                             class="w-full h-96 object-cover rounded-2xl shadow-2xl cursor-pointer"
+                             style="opacity: 1;"
+                             onclick="openModal()"
+                             onerror="this.src='https://picsum.photos/800/600?property={{ property.id }}'">
+                        
+                        <!-- Image Counter -->
+                        <div class="absolute top-6 right-6 glass-dark text-white px-4 py-2 rounded-full text-sm font-semibold">
+                            <span id="currentImageNum">1</span> / {{ property.images|length }}
+                        </div>
+                        
+                        <!-- Navigation Arrows -->
+                        {% if property.images|length > 1 %}
+                        <button onclick="previousImage()" 
+                                class="gallery-nav prev hover-lift">
+                            ‹
+                        </button>
+                        <button onclick="nextImage()" 
+                                class="gallery-nav next hover-lift">
+                            ›
+                        </button>
+                        {% endif %}
+
+                        <!-- Price Overlay -->
+                        <div class="absolute bottom-6 left-6">
+                            <div class="price-tag text-lg">
+                                ${{ property.price|floatformat:0 }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thumbnail Gallery -->
+                    <div class="flex gap-4 overflow-x-auto py-4 px-2">
+                        {% for image in property.images %}
+                        <div class="glass-thumbnail rounded-xl p-2 hover-lift">
+                            <img src="/media/{{ image }}" 
+                                 alt="Thumbnail {{ forloop.counter }}"
+                                 class="thumbnail {% if forloop.first %}active{% endif %}"
+                                 onclick="changeImage('{{ image }}', {{ forloop.counter0 }})"
+                                 onerror="this.src='https://picsum.photos/80/60?thumb={{ forloop.counter }}'">
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                {% else %}
+                    <div class="text-center p-16 glass rounded-2xl">
+                        <div class="text-6xl mb-4">🏠</div>
+                        <p class="text-glass text-xl">No images available for this property</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Property Details -->
+        <div class="p-8">
+            <!-- Property Features -->
+            <div class="glass-card rounded-2xl p-8 mb-8 hover-lift">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
+                    <div class="feature-icon text-center">
+                        <div class="text-2xl mb-2">🛏️</div>
+                        <div class="text-glass font-semibold">{{ property.bedrooms }} Bedrooms</div>
+                    </div>
+                    <div class="feature-icon text-center">
+                        <div class="text-2xl mb-2">🚿</div>
+                        <div class="text-glass font-semibold">{{ property.baths }} Bathrooms</div>
+                    </div>
+                    <div class="feature-icon text-center">
+                        <div class="text-2xl mb-2">📐</div>
+                        <div class="text-glass font-semibold">{{ property.sq_ft }} SQFT</div>
+                    </div>
+                    <div class="feature-icon text-center">
+                        <div class="text-2xl mb-2">📍</div>
+                        <div class="text-glass font-semibold">{{ property.zip_code }}</div>
+                    </div>
+                </div>
+                
+                <div class="text-glass-light">
+                    <p class="text-lg leading-relaxed">{{ property.description|default:"A beautiful property in a great location. Contact us for more details." }}</p>
+                </div>
+            </div>
+
+            <!-- Google Map Section -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold mb-6 text-glass flex items-center">
+                    <span class="feature-icon mr-3">🗺️</span>
+                    Property Location & Nearby Amenities
+                </h2>
+                <div class="map-container relative">
+                    <div id="googleMap" class="map-glass rounded-2xl overflow-hidden"></div>
+                    <div class="absolute top-6 right-6 glass rounded-2xl p-4 shadow-lg">
+                        <div class="flex items-center mb-3">
+                            <div class="w-4 h-4 bg-red-500 rounded-full mr-3"></div>
+                            <span class="text-sm font-semibold text-glass">Property</span>
+                        </div>
+                        <div class="flex items-center mb-3">
+                            <div class="w-4 h-4 bg-green-500 rounded-full mr-3"></div>
+                            <span class="text-sm font-semibold text-glass">Grocery Stores</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-blue-500 rounded-full mr-3"></div>
+                            <span class="text-sm font-semibold text-glass">Schools</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grocery Stores Section -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold mb-6 text-glass flex items-center">
+                    <span class="feature-icon mr-3">🛒</span>
+                    Nearest Grocery Stores
+                </h2>
+                {% if groceries %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {% for store in groceries %}
+                            <div class="glass-card p-6 rounded-2xl hover-lift cursor-pointer transition-all duration-300" 
+                                 onclick="focusOnMarker('store{{ forloop.counter }}')">
+                                <h3 class="font-semibold text-lg text-glass mb-3">{{ store.name }}</h3>
+                                <p class="text-glass-light text-sm mb-4">{{ store.vicinity }}</p>
+                                <div class="flex justify-between items-center">
+                                    {% if store.rating %}
+                                        <span class="text-yellow-glow font-semibold">⭐ {{ store.rating }}/5</span>
+                                    {% else %}
+                                        <span class="text-glass-light">No rating</span>
+                                    {% endif %}
+                                    <span class="text-xs glass-dark text-white px-2 py-1 rounded-full">Store</span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="glass-card p-8 rounded-2xl text-center">
+                        <p class="text-glass text-lg">No grocery stores found nearby.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Schools Section -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold mb-6 text-glass flex items-center">
+                    <span class="feature-icon mr-3">🏫</span>
+                    Nearby Schools
+                </h2>
+                {% if schools %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {% for school in schools %}
+                            <div class="glass-card p-6 rounded-2xl hover-lift cursor-pointer transition-all duration-300"
+                                 onclick="focusOnMarker('school{{ forloop.counter }}')">
+                                <h3 class="font-semibold text-lg text-glass mb-3">{{ school.name }}</h3>
+                                <p class="text-glass-light text-sm mb-4">{{ school.vicinity }}</p>
+                                <div class="flex justify-between items-center">
+                                    {% if school.rating %}
+                                        <span class="text-yellow-glow font-semibold">⭐ {{ school.rating }}/5</span>
+                                    {% else %}
+                                        <span class="text-glass-light">Not rated</span>
+                                    {% endif %}
+                                    <span class="text-xs glass-dark text-white px-2 py-1 rounded-full">School</span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="glass-card p-8 rounded-2xl text-center">
+                        <p class="text-glass text-lg">No schools found nearby.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-12">
+                <a href="{% url 'listings:property_list' %}" 
+                   class="btn-glass px-8 py-4 rounded-2xl transition duration-300 inline-block font-semibold hover-lift text-center">
+                    ← Back to Listings
+                </a>
+             
+         
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-gray-900 bg-opacity-80 backdrop-blur-md"></div>
+        <div class="relative w-full h-full flex items-center justify-center p-8">
+            <button onclick="closeModal()" class="absolute top-8 right-8 glass-nav text-white text-3xl z-10 w-12 h-12 rounded-full flex items-center justify-center hover-lift">✕</button>
+            <img id="modalImage" class="max-w-full max-h-full object-contain rounded-2xl shadow-2xl">
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 glass-dark text-white px-4 py-2 rounded-full">
+                <span id="modalCounter"></span>
+            </div>
+            
+            <!-- Modal Navigation Arrows -->
+            {% if property.images|length > 1 %}
+            <button onclick="modalNextImage()" class="absolute right-8 top-1/2 transform -translate-y-1/2 glass-nav text-white text-4xl z-10 w-14 h-14 rounded-full flex items-center justify-center hover-lift">›</button>
+            <button onclick="modalPrevImage()" class="absolute left-8 top-1/2 transform -translate-y-1/2 glass-nav text-white text-4xl z-10 w-14 h-14 rounded-full flex items-center justify-center hover-lift">‹</button>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Enhanced Gallery JavaScript with gray-yellow theme
+        let currentImageIndex = 0;
+        const totalImages = {{ property.images|length }};
+        const images = [{% for image in property.images %}'{{ image }}'{% if not forloop.last %},{% endif %}{% endfor %}];
+        
+        function changeImage(imagePath, index) {
+            const mainImage = document.getElementById('mainImage');
+            
+            // Fade out with scale
+            mainImage.style.opacity = '0';
+            mainImage.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                mainImage.src = '/media/' + imagePath;
+                currentImageIndex = index;
+                
+                // Update counter
+                document.getElementById('currentImageNum').textContent = index + 1;
+                
+                // Update active thumbnail
+                document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+                    thumb.classList.toggle('active', i === index);
+                });
+                
+                // Fade in with scale
+                setTimeout(() => {
+                    mainImage.style.opacity = '1';
+                    mainImage.style.transform = 'scale(1)';
+                }, 50);
+            }, 200);
+        }
+        
+        function nextImage() {
+            if (totalImages <= 1) return;
+            const newIndex = (currentImageIndex + 1) % totalImages;
+            changeImage(images[newIndex], newIndex);
+        }
+        
+        function previousImage() {
+            if (totalImages <= 1) return;
+            const newIndex = (currentImageIndex - 1 + totalImages) % totalImages;
+            changeImage(images[newIndex], newIndex);
+        }
+
+        // Modal functionality
+        function openModal() {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalCounter = document.getElementById('modalCounter');
+            
+            modalImage.src = document.getElementById('mainImage').src;
+            modalCounter.textContent = `${currentImageIndex + 1} / ${totalImages}`;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            document.getElementById('imageModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function modalNextImage() {
+            nextImage();
+            setTimeout(() => {
+                const modalImage = document.getElementById('modalImage');
+                const modalCounter = document.getElementById('modalCounter');
+                modalImage.src = document.getElementById('mainImage').src;
+                modalCounter.textContent = `${currentImageIndex + 1} / ${totalImages}`;
+            }, 250);
+        }
+
+        function modalPrevImage() {
+            previousImage();
+            setTimeout(() => {
+                const modalImage = document.getElementById('modalImage');
+                const modalCounter = document.getElementById('modalCounter');
+                modalImage.src = document.getElementById('mainImage').src;
+                modalCounter.textContent = `${currentImageIndex + 1} / ${totalImages}`;
+            }, 250);
+        }
+        
+        // Make main image clickable to open modal
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainImage = document.getElementById('mainImage');
+            if (mainImage) {
+                mainImage.addEventListener('click', openModal);
+            }
+        });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            const modal = document.getElementById('imageModal');
+            if (!modal.classList.contains('hidden')) {
+                if (e.key === 'ArrowRight') modalNextImage();
+                if (e.key === 'ArrowLeft') modalPrevImage();
+                if (e.key === 'Escape') closeModal();
+            } else {
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'ArrowLeft') previousImage();
+            }
+        });
+
+        // Google Maps Integration
+        let map;
+        let markers = {};
+        const propertyCoords = { lat: {{ property_lat }}, lng: {{ property_lng }} };
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('googleMap'), {
+                zoom: 14,
+                center: propertyCoords,
+                styles: [
+                    {
+                        featureType: "all",
+                        elementType: "geometry.fill",
+                        stylers: [{ weight: "2.00" }]
+                    },
+                    {
+                        featureType: "all",
+                        elementType: "geometry.stroke",
+                        stylers: [{ color: "#9c9c9c" }]
+                    },
+                    {
+                        featureType: "landscape",
+                        elementType: "all",
+                        stylers: [{ color: "#f2f2f2" }]
+                    }
+                ]
+            });
+
+            // Property marker with custom icon
+            const propertyMarker = new google.maps.Marker({
+                position: propertyCoords,
+                map: map,
+                title: '{{ property.name }}',
+                icon: {
+                    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="18" fill="#d69e2e" stroke="white" stroke-width="3"/>
+                            <circle cx="20" cy="20" r="8" fill="white"/>
+                            <path d="M20 12 L24 20 L20 18 L16 20 Z" fill="#2d3748"/>
+                        </svg>
+                    `),
+                    scaledSize: new google.maps.Size(40, 40)
+                }
+            });
+
+            // Grocery store markers
+            {% for store in groceries %}
+                {% if store.geometry.location.lat and store.geometry.location.lng %}
+                const storeMarker{{ forloop.counter }} = new google.maps.Marker({
+                    position: { lat: {{ store.geometry.location.lat }}, lng: {{ store.geometry.location.lng }} },
+                    map: map,
+                    title: '{{ store.name }}',
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 10,
+                        fillColor: '#10B981',
+                        fillOpacity: 1,
+                        strokeColor: '#FFFFFF',
+                        strokeWeight: 2
+                    }
+                });
+                markers['store{{ forloop.counter }}'] = storeMarker{{ forloop.counter }};
+                {% endif %}
+            {% endfor %}
+
+            // School markers
+            {% for school in schools %}
+                {% if school.geometry.location.lat and school.geometry.location.lng %}
+                const schoolMarker{{ forloop.counter }} = new google.maps.Marker({
+                    position: { lat: {{ school.geometry.location.lat }}, lng: {{ school.geometry.location.lng }} },
+                    map: map,
+                    title: '{{ school.name }}',
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 10,
+                        fillColor: '#3B82F6',
+                        fillOpacity: 1,
+                        strokeColor: '#FFFFFF',
+                        strokeWeight: 2
+                    }
+                });
+                markers['school{{ forloop.counter }}'] = schoolMarker{{ forloop.counter }};
+                {% endif %}
+            {% endfor %}
+        }
+
+        function focusOnMarker(markerId) {
+            const marker = markers[markerId];
+            if (marker) {
+                map.setCenter(marker.getPosition());
+                map.setZoom(16);
+                
+                // Add bounce animation
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+                setTimeout(() => {
+                    marker.setAnimation(null);
+                }, 1500);
+            }
+        }
+
+        // Load Google Maps
+        {% if GOOGLE_MAPS_API_KEY %}
+        function loadGoogleMaps() {
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initMap`;
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        }
+        window.addEventListener('load', loadGoogleMaps);
+        {% else %}
+        document.getElementById('googleMap').innerHTML = `
+            <div class="flex items-center justify-center h-full glass rounded-2xl">
+                <div class="text-center p-8">
+                    <div class="text-4xl mb-4">🗺️</div>
+                    <p class="text-glass text-lg mb-2">Google Maps API key not configured</p>
+                    <p class="text-sm text-glass-light">Please add GOOGLE_MAPS_API_KEY to your settings</p>
+                </div>
+            </div>
+        `;
+        {% endif %}
+
+        // Add smooth scrolling for better UX
+        function smoothScrollTo(element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+
+    
+</body>
+</html>

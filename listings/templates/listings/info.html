@@ -1,0 +1,2827 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Homes - Premium Real Estate</title>
+    <link rel="stylesheet" href="{% static 'listings/css/info.css' %}">
+    <link rel="stylesheet" href="{% static 'listings/css/info1.css' %}"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'listings/css/responsive.css' %}">
+</head>
+
+<!-- CSS Styles -->
+<style>
+    /* Professional Reviews Section - Clean Version */
+.reviews-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.reviews-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(30, 58, 138, 0.1), transparent);
+}
+
+/* Header */
+.reviews-header {
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    padding: 0 24px;
+    text-align: center;
+}
+
+.reviews-title-section {
+    margin-bottom: 50px;
+}
+
+.section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(30, 58, 138, 0.1);
+    color: #1E3A8A;
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.badge-icon {
+    font-size: 16px;
+}
+
+.reviews-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.reviews-subtitle {
+    font-size: 1.125rem;
+    color: #64748b;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Stats Cards */
+.reviews-stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.stats-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.stats-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(30, 58, 138, 0.1);
+    border-color: rgba(30, 58, 138, 0.2);
+}
+
+.stats-card-inner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.stats-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+}
+
+.stats-content {
+    flex: 1;
+}
+
+.stats-number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #1a1a1a;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.stats-label {
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* Reviews Container */
+.reviews-container {
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    padding: 0 24px;
+}
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 30px;
+}
+
+/* Review Cards */
+.review-card {
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.review-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(30, 58, 138, 0.15);
+    border-color: rgba(30, 58, 138, 0.2);
+}
+
+.review-card.featured {
+    border: 2px solid #ffc107;
+    background: linear-gradient(135deg, #fff9db 0%, #fff3bf 100%);
+}
+
+.review-card.featured::before {
+    content: "⭐ Featured";
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 1;
+}
+
+.review-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.reviewer-avatar {
+    flex-shrink: 0;
+}
+
+.reviewer-avatar img {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 3px solid white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.reviewer-info {
+    flex: 1;
+}
+
+.reviewer-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+    line-height: 1.2;
+}
+
+.reviewer-location {
+    font-size: 14px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.reviewer-location i {
+    font-size: 12px;
+}
+
+.review-rating {
+    flex-shrink: 0;
+    color: #f59e0b;
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+.review-content {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.review-content p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #334155;
+    margin: 0;
+    font-style: italic;
+}
+
+.review-content::before {
+    content: '"';
+    font-size: 60px;
+    color: rgba(30, 58, 138, 0.1);
+    position: absolute;
+    top: -20px;
+    left: -10px;
+    font-family: Georgia, serif;
+    line-height: 1;
+    z-index: 0;
+}
+
+.review-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: #64748b;
+    flex-wrap: wrap;
+}
+
+.review-date {
+    font-weight: 600;
+    color: #475569;
+}
+
+.review-category {
+    background: rgba(30, 58, 138, 0.1);
+    color: #1E3A8A;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.review-property {
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    border-left: 3px solid #1E3A8A;
+}
+
+.review-property small {
+    font-size: 13px;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.review-property i {
+    color: #1E3A8A;
+}
+
+.review-actions {
+    border-top: 1px solid #f1f5f9;
+    padding-top: 16px;
+    margin-top: 16px;
+}
+
+.btn-helpful {
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+}
+
+.btn-helpful:hover {
+    background: #f8fafc;
+    color: #1E3A8A;
+}
+
+.btn-helpful.active {
+    color: #1E3A8A;
+    background: rgba(30, 58, 138, 0.1);
+}
+
+.btn-helpful i {
+    font-size: 16px;
+}
+
+/* Loading State */
+.loading-reviews {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.spinner-circle {
+    width: 12px;
+    height: 12px;
+    background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+    border-radius: 50%;
+    animation: pulse 1.4s ease-in-out infinite;
+}
+
+.spinner-circle:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.spinner-circle:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.loading-text {
+    color: #64748b;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* No Reviews State */
+.no-reviews {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 20px;
+    color: #64748b;
+}
+
+.no-reviews i {
+    font-size: 64px;
+    color: #cbd5e1;
+    margin-bottom: 20px;
+}
+
+.no-reviews p {
+    font-size: 18px;
+    color: #64748b;
+}
+
+/* Error State */
+.error-reviews {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 20px;
+    color: #dc3545;
+}
+
+.error-reviews i {
+    font-size: 64px;
+    color: #dc3545;
+    margin-bottom: 20px;
+    opacity: 0.7;
+}
+
+.error-reviews p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.retry-btn {
+    background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.retry-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(30, 58, 138, 0.3);
+}
+
+/* Pagination */
+.reviews-pagination {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.pagination-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pagination-btn:hover:not(.disabled) {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #1E3A8A;
+}
+
+.pagination-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-btn i {
+    font-size: 12px;
+}
+
+.page-numbers {
+    display: flex;
+    gap: 8px;
+}
+
+.page-number {
+    min-width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.page-number:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #1E3A8A;
+}
+
+.page-number.active {
+    background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+    color: white;
+    border-color: transparent;
+    font-weight: 600;
+}
+
+/* CTA Section */
+.reviews-cta {
+    max-width: 800px;
+    margin: 80px auto 0;
+    padding: 40px;
+    background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+.reviews-cta::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.2;
+}
+
+.cta-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+}
+
+.cta-icon {
+    font-size: 48px;
+    color: white;
+}
+
+.cta-text {
+    flex: 1;
+    color: white;
+}
+
+.cta-text h3 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.cta-text p {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+.cta-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    color: #1E3A8A;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.btn-icon {
+    font-size: 18px;
+}
+
+/* Toast Notifications */
+.toast-container {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.toast {
+    display: none;
+    align-items: center;
+    gap: 16px;
+    background: white;
+    border-radius: 12px;
+    padding: 16px 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    animation: toastSlideIn 0.3s ease;
+    max-width: 400px;
+}
+
+@keyframes toastSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.toast.toast-success {
+    border-left: 4px solid #10b981;
+}
+
+.toast.toast-error {
+    border-left: 4px solid #ef4444;
+}
+
+.toast-icon {
+    font-size: 20px;
+}
+
+.toast-success .toast-icon {
+    color: #10b981;
+}
+
+.toast-error .toast-icon {
+    color: #ef4444;
+}
+
+.toast-content {
+    flex: 1;
+}
+
+.toast-title {
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 2px;
+}
+
+.toast-message {
+    font-size: 14px;
+    color: #64748b;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.toast-close:hover {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+/* Modal Styles (Keep existing modal styles) */
+.review-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.modal-container {
+    position: relative;
+    background: white;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    padding: 32px 40px;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.modal-title-section {
+    flex: 1;
+}
+
+.modal-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(30, 58, 138, 0.1);
+    color: #1E3A8A;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.modal-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+}
+
+.modal-subtitle {
+    color: #64748b;
+    font-size: 16px;
+}
+
+.modal-close {
+    width: 40px;
+    height: 40px;
+    background: #f8fafc;
+    border: none;
+    border-radius: 8px;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    background: #e2e8f0;
+}
+
+.modal-form {
+    padding: 40px;
+    overflow-y: auto;
+    max-height: calc(90vh - 140px);
+}
+
+.form-section {
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.form-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.form-section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 24px;
+}
+
+.section-number {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+    color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.label-text {
+    margin-right: 4px;
+}
+
+.required {
+    color: #ef4444;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #334155;
+    transition: all 0.2s ease;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+    outline: none;
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: #94a3b8;
+}
+
+.form-hint {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 4px;
+}
+
+/* Star Rating */
+.rating-section {
+    margin-bottom: 24px;
+}
+
+.rating-label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.star-rating {
+    display: flex;
+    gap: 4px;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 16px;
+    background: #f8fafc;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 80px;
+}
+
+.star-label:hover {
+    background: #e2e8f0;
+}
+
+.star-label i {
+    font-size: 24px;
+    color: #cbd5e1;
+    transition: all 0.2s ease;
+}
+
+.star-label .rating-text {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.star-rating input:checked + .star-label {
+    background: rgba(30, 58, 138, 0.1);
+    border-color: #1E3A8A;
+}
+
+.star-rating input:checked + .star-label i {
+    color: #f59e0b;
+}
+
+/* Textarea Counter */
+.textarea-counter {
+    text-align: right;
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 4px;
+}
+
+.current-count {
+    color: #334155;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.btn-secondary,
+.btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 140px;
+}
+
+.btn-secondary {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.btn-secondary:hover {
+    background: #e2e8f0;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(30, 58, 138, 0.3);
+}
+
+.form-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #64748b;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+}
+
+.form-note i {
+    color: #3B82F6;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .reviews-grid {
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .reviews-section {
+        padding: 60px 0;
+    }
+    
+    .reviews-title {
+        font-size: 2rem;
+    }
+    
+    .reviews-stats-cards {
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+    
+    .stats-card {
+        padding: 20px;
+    }
+    
+    .stats-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+    }
+    
+    .stats-number {
+        font-size: 1.75rem;
+    }
+    
+    .reviews-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .review-card {
+        padding: 24px;
+    }
+    
+    .reviews-pagination {
+        flex-wrap: wrap;
+    }
+    
+    .pagination-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+    
+    .page-number {
+        min-width: 40px;
+        height: 40px;
+        font-size: 13px;
+    }
+    
+    .reviews-cta {
+        margin: 40px 24px 0;
+        padding: 32px 24px;
+    }
+    
+    .cta-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 24px;
+    }
+    
+    .cta-icon {
+        font-size: 36px;
+    }
+    
+    .cta-text h3 {
+        font-size: 24px;
+    }
+    
+    .modal-form {
+        padding: 24px;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-header {
+        padding: 24px;
+    }
+    
+    .modal-title {
+        font-size: 24px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn-secondary,
+    .btn-primary {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .reviews-stats-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .reviewer-avatar img {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .reviews-pagination {
+        gap: 8px;
+    }
+    
+    .pagination-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .page-number {
+        min-width: 36px;
+        height: 36px;
+        font-size: 12px;
+    }
+    
+    .toast-container {
+        top: 16px;
+        right: 16px;
+        left: 16px;
+    }
+    
+    .toast {
+        max-width: 100%;
+    }
+}
+</style>
+/* Add this to replace your inline styles */
+<style>
+/* Orange Theme Buttons */
+.cta-button {
+    background: #F97316;
+    color: white;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.cta-button:hover {
+    background: #ea580c;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(249, 115, 22, 0.3);
+    color: white;
+}
+
+/* Property Detail Button */
+a.cta-button[href*="property_detail"] {
+    padding: 12px 24px;
+    font-size: 15px;
+}
+
+/* View All Properties Button */
+a.cta-button[href*="property_list"] {
+    background: linear-gradient(135deg, #F97316 0%, #fb923c 100%);
+    padding: 16px 32px;
+    font-size: 17px;
+    margin-top: 40px;
+    min-width: 220px;
+}
+
+a.cta-button[href*="property_list"]:hover {
+    background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
+    box-shadow: 0 12px 32px rgba(249, 115, 22, 0.4);
+}
+
+/* Featured Badge */
+.featured-badge {
+    background: linear-gradient(135deg, #F97316 0%, #fb923c 100%);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
+}
+
+/* Button Container */
+.button-container {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.button-container a.cta-button {
+    flex: 2;
+}
+
+.button-container .featured-badge {
+    flex: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .button-container {
+        flex-direction: column;
+    }
+    
+    .button-container a.cta-button,
+    .button-container .featured-badge {
+        width: 100%;
+        flex: none;
+    }
+}
+</style>
+<body>
+    <!-- Mortgage Calculator Modal -->
+<div id="mortgageModal" class="modal" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); z-index: 1100; overflow-y:auto;">
+  <div class="modal-content" style="background:white; margin:50px auto; padding:0; border-radius:20px; max-width:900px; position:relative;">
+    <span class="close-mortgage-modal" style="position:absolute; top:20px; right:25px; font-size:35px; color:#1E3A8A; cursor:pointer; z-index:1101;">&times;</span>
+
+    <div class="mortgage-modal-content">
+      <div class="mortgage-modal-header">
+        <h2 style="font-size: 2.2rem; margin-bottom: 7px; text-align: center;">Mortgage Calculator</h2>
+        <p style="opacity: 0.95; font-size: 1.1rem;text-align: center;">
+          Estimate your monthly payment in seconds (Principal + Interest + PMI + HOA + property Tax).
+        </p>
+      </div>
+
+      <div class="mortgage-modal-body">
+        <!-- Left: Inputs -->
+        <div class="mortgage-panel glass-card" style="border-radius: 16px; padding: 25px;">
+          <h3 style="color:#1E3A8A; margin-bottom: 18px;">Loan Details</h3>
+
+        <div class="mc-fields">
+
+        <div class="mc-field">
+            <label class="mc-label" style="font-size:1.20rem;" for="mcPrincipal">
+            <i class="fas fa-house"></i> Home Price / Loan Amount ($)
+            </label>
+            <input id="mcPrincipal" class="mc-input" type="number" step="1000" value="300000">
+        </div>
+
+        <div class="mc-field">
+            <label class="mc-label" style="font-size:1.20rem;"  for="mcRate">
+            <i class="fas fa-percent"></i> Interest Rate (%)
+            </label>
+            <input id="mcRate" class="mc-input" type="number" step="0.01" value="4.99">
+        </div>
+        <div class="mc-field">
+            <label class="mc-label" style="font-size:1.20rem;" for="mcTax">
+                <i class="fas fa-receipt"></i> Annual Property Tax ($)
+            </label>
+            <input id="mcTax" class="mc-input" type="number" step="100" value="3600">
+        </div>
+        <div class="mc-field">
+            <label class="mc-label" style="font-size:1.20rem;" for="mcInsurance">
+                <i class="fas fa-house-shield"></i> Annual Home Insurance ($)
+            </label>
+            <input id="mcInsurance" class="mc-input" type="number" step="100" value="1200">
+        </div>
+
+        <div class="mc-field">
+            <label class="mc-label" style="font-size:1.20rem;" for="mcPMI">
+                <i class="fas fa-file-invoice-dollar"></i> PMI ($)
+            </label>
+            <input id="mcPMI" class="mc-input" type="number" step="10" value="1200">
+        </div>
+
+        <div class="mc-field">
+            <label class="mc-label" style="font-size:1.20rem;" for="mcHOA">
+                <i class="fas fa-building"></i> HOA ($)
+            </label>
+            <input id="mcHOA" class="mc-input" type="number" step="10" value="1200">
+        </div>
+
+        <div class="mc-field">
+            <label class="mc-label" style="font-size:1.20rem;" for="mcYears">
+            <i class="fas fa-calendar"></i> Term (Years)
+            </label>
+            <select id="mcYears" class="mc-input">
+                <option value="40">40 years</option>
+                <option value="35">35 years</option>
+                <option value="30" selected>30 years</option>
+                <option value="20">20 years</option>
+                <option value="15">15 years</option>
+                <option value="10">10 years</option>
+                <option value="5">5 years</option>
+            </select>
+
+        </div>
+
+        </div>
+
+
+          <button id="mcCalcBtn" class="cta-button" style="width:100%; margin-top: 12px;">
+            Calculate Payment
+          </button>
+
+          <div id="mcError" style="margin-top: 12px; color:#b00020; font-weight: 600;"></div>
+        </div>
+
+        <!-- Right: Result -->
+        <div class="mortgage-panel glass-card" style="border-radius: 16px; padding: 25px;">
+          <h3 style="color:#1E3A8A; margin-bottom: 18px;">Estimated Payment</h3>
+
+          <div style="background: rgba(30,58,138,0.06); border-radius: 14px; padding: 18px; border-left: 5px solid #F97316;">
+            <div style="color:#6B7280; font-weight: 600;">Monthly Payment</div>
+            <div style="font-size: 2.4rem; font-weight: 800; color:#1E3A8A; margin-top: 6px;">
+              $<span id="mcMonthly">0.00</span>
+            </div>
+            <div style="color:#6B7280; margin-top: 8px; line-height: 1.4;">
+              Includes principal, interest, property tax, insurance HOA,and PMI.
+            </div>
+          </div>
+
+          <div class="agent-modal-stats" style="margin-top: 18px;">
+            <div class="agent-modal-stat">
+              <div style="font-size:1.3rem; font-weight:700; color:#1E3A8A;">$<span id="mcTotalPaid">0</span></div>
+              <div style="font-size:0.9rem; color:#6B7280;">Total Paid</div>
+            </div>
+            <div class="agent-modal-stat">
+              <div style="font-size:1.3rem; font-weight:700; color:#1E3A8A;">$<span id="mcTotalInterest">0</span></div>
+              <div style="font-size:0.9rem; color:#6B7280;">Total Interest</div>
+            </div>
+            <div class="agent-modal-stat">
+              <div style="font-size:1.3rem; font-weight:700; color:#1E3A8A;"><span id="mcMonths">0</span></div>
+              <div style="font-size:0.9rem; color:#6B7280;">Months</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 18px;">
+            <a href="{% url 'listings:contact' %}" class="contact-button contact-primary" style="text-decoration:none;">
+              <i class="fas fa-phone"></i> Talk to an Agent
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                <h1>Relator Rajaram Gautam</h1>
+            </div>
+        
+           <nav>
+    <ul>
+        <li><a href="{% url 'listings:property_list' %}" class="glass-light">Properties</a></li>
+        <li><a href="#agent" class="glass-light agent-button">Agents</a></li>
+        <li><a href="{% url 'listings:killeen' %}" class="glass-light">About Killeen</a></li>
+        <li><a href="{% url 'listings:contact' %}" class="glass-light">Contact</a></li>
+        <li><a href="{% url 'listings:login' %}" class="glass-light">login</a></li>
+        <li>
+        <a href="#" class="mc-trigger glass-light" data-mc-principal="300000">
+          Estimate Payment
+        </a>
+        </li>
+    </ul>
+</nav>
+        </header>
+        
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Find Your Dream Home Today</h2>
+                <p class="text-lg md:text-xl mb-8 max-w-2xl leading-relaxed">Serving Fort Cavazos buyers, sellers, and veterans with integrity and excellence.</p>
+
+          
+            </div>
+            
+            <div class="house-showcase glass">
+                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="Luxury Modern House" class="house-image">
+                <div class="house-overlay">
+                  <h2 style="
+    font-style: italic;
+    font-family: cursive;
+    color: #F97316;
+    font-size: clamp(18px, 2.2vw, 28px);
+    line-height: 1.6;
+    border-left: 4px solid #F97316;
+    padding-left: 20px;
+    margin: 30px auto;
+    max-width: 800px;
+    quotes: '\\201C' '\\201D';
+">“Home is not just a place you live — it’s where your story begins and your dreams come home.”</h2>
+                </div>
+            </div>
+        </section>
+        
+    <!-- Modal for Seller/Buyer Questions -->
+<div id="interestModal" class="modal" style="display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); z-index: 1200; overflow-y:auto;">
+  <div class="modal-content" style="background:white; margin:50px auto; padding:0; border-radius:20px; max-width:800px; position:relative;">
+    <span class="close-interest-modal" style="position:absolute; top:20px; right:25px; font-size:35px; color:#1E3A8A; cursor:pointer; z-index:1201;">&times;</span>
+    
+    <div id="interestModalContent" style="padding: 40px;">
+      <!-- Content will be loaded dynamically -->
+    </div>
+  </div>
+</div>
+
+<!-- Update the trigger buttons -->
+<div class="seller-buyer-section">
+  <h2 class="section-title">Are You Looking To Buy or Sell?</h2>
+  <div class="seller-buyer-options">
+    <button class="option-button glass-card open-interest-modal" data-interest-type="seller">
+      <i class="fas fa-home option-icon"></i>
+      Sell Your Property
+    </button>
+    <button class="option-button glass-card open-interest-modal" data-interest-type="buyer">
+      <i class="fas fa-search-dollar option-icon"></i>
+      Buy a Property
+    </button>
+  </div>
+</div>
+        
+    <!-- Featured Properties Section -->
+<section class="property-section" style="margin-bottom: 80px;">
+    <h2 class="section-title">Featured Properties</h2>
+    <p style="text-align: center; color: white; margin-bottom: 40px; font-size: 1.2rem;">
+        Discover our handpicked selection of premium properties
+    </p>
+    
+    <div class="property-grid">
+        {% for listing in listings %}
+        <div class="property-card glass-card">
+            {% if listing.get_first_image %}
+                <img src="{{ listing.get_first_image }}" alt="{{ listing.title }}" class="property-image">
+            {% else %}
+                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Property Image" class="property-image">
+            {% endif %}
+            
+            <div class="property-info">
+                <div class="property-price">${{ listing.price|floatformat:0 }}</div>
+                <div class="property-address">{{ listing.address }}, {{ listing.city }}, {{ listing.state }}</div>
+                
+                <div class="property-features">
+                    <div class="feature">
+                        <i class="fas fa-bed"></i>
+                        <span>{{ listing.beds }} Bed{{ listing.beds|pluralize }}</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-bath"></i>
+                        <span>{{ listing.baths }} Bath{{ listing.baths|pluralize }}</span>
+                    </div>
+                    {% if listing.sq_ft %}
+                    <div class="feature">
+                        <i class="fas fa-ruler-combined"></i>
+                        <span>{{ listing.sq_ft }} sq ft</span>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <h3 class="property-title" style="font-size: 1.2rem; color: #1E3A8A; margin: 15px 0 10px 0; font-weight: 600;">
+                    {{ listing.title }}
+                </h3>
+                
+                <p class="property-description" style="color: #6B7280; line-height: 1.5; margin-bottom: 20px; font-size: 0.95rem;">
+                    {{ listing.description|truncatewords:20 }}
+                </p>
+                
+                <div class="button-container">
+                    <a href="{% url 'listings:property_detail' listing.id %}" class="cta-button">
+                        View Details
+                    </a>
+                    {% if listing.featured %}
+                    <span class="featured-badge">
+                        ⭐ Featured
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <!-- Fallback properties if no listings exist -->
+  
+
+        
+
+        {% endfor %}
+    </div>
+    
+    <!-- View All Properties Button -->
+<div style="text-align: center; margin-top: 40px;">
+    <a href="{% url 'listings:property_list' %}" class="cta-button">
+        View All Properties
+    </a>
+</div>
+</section>
+        
+        <!-- Single Agent Section -->
+        <!-- In your home.html template -->
+<section class="agent-section" id="agent">
+    <h2 class="section-title">
+        {% if section_content.agent and section_content.agent.title %}
+            {{ section_content.agent.title }}
+        {% else %}
+            Meet Your Real Estate Expert
+        {% endif %}
+    </h2>
+    
+    {% if agent_profile %}
+    <div class="agent-container glass-card">
+        <div class="agent-photo-container">
+            {% if agent_profile.photo %}
+                <img src="{{ agent_profile.photo.url }}" alt="{{ agent_profile.name }} - Real Estate Agent" class="agent-photo">
+            {% else %}
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ agent_profile.name }} - Real Estate Agent" class="agent-photo">
+            {% endif %}
+        </div>
+        <div class="agent-info">
+            <h2 class="agent-name">{{ agent_profile.name }}</h2>
+            <div class="agent-title">{{ agent_profile.title }}</div>
+            
+            <div class="agent-rating">
+                {% for star_class in agent_profile.get_star_rating %}
+                    <i class="{{ star_class }}"></i>
+                {% endfor %}
+                <span>{{ agent_profile.rating }} Rating ({{ agent_profile.review_count }} Client Reviews)</span>
+            </div>
+            
+            <p class="agent-description">
+                {{ agent_profile.description|linebreaks }}
+            </p>
+            
+            <!-- Areas of Expertise -->
+            {% with expertise_list=agent_profile.get_areas_of_expertise_list %}
+            {% if expertise_list %}
+            <h3 style="font-size: 1.5rem; color: #1E3A8A; margin-bottom: 15px;">Areas of Expertise</h3>
+            <ul style="list-style: disc; padding-left: 20px; color: #6B7280; margin-bottom: 25px; line-height: 1.6;">
+                {% for item in expertise_list %}
+                <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+
+            <!-- Why Choose Section -->
+            {% with why_choose_list=agent_profile.get_why_choose_list %}
+            {% if why_choose_list %}
+            <h3 style="font-size: 1.5rem; color: #1E3A8A; margin-bottom: 15px;">Why Choose {{ agent_profile.name.split.0 }}</h3>
+            <ul style="list-style: disc; padding-left: 20px; color: #6B7280; margin-bottom: 25px; line-height: 1.6;">
+                {% for item in why_choose_list %}
+                <li><strong>{{ item.title }}:</strong> {{ item.description }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            
+            <!-- Agent Stats -->
+            <div class="agent-stats">
+                <div class="stat glass-light">
+                    <div class="stat-number">{{ agent_profile.properties_sold }}</div>
+                    <div class="stat-label">Properties Sold</div>
+                </div>
+                <div class="stat glass-light">
+                    <div class="stat-number">{{ agent_profile.client_satisfaction }}</div>
+                    <div class="stat-label">Client Satisfaction</div>
+                </div>
+                <div class="stat glass-light">
+                    <div class="stat-number">{{ agent_profile.years_experience }}</div>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+            </div>
+            
+            <!-- Contact Buttons -->
+            <div class="agent-contact">
+                <a href="tel:{{ agent_profile.phone }}" class="contact-button contact-primary" style="text-decoration: none;">
+                    <i class="fas fa-phone"></i> Call {{ agent_profile.name.split.0 }}
+                </a>
+                <a href="mailto:{{ agent_profile.email }}" class="contact-button contact-secondary" style="text-decoration: none;">
+                    <i class="fas fa-envelope"></i> Email {{ agent_profile.name.split.0 }}
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    {% else %}
+    <!-- Fallback content if no agent profile exists -->
+    <div class="agent-container glass-card">
+        <div class="agent-photo-container">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Real Estate Agent" class="agent-photo">
+        </div>
+        <div class="agent-info">
+            <h2 class="agent-name">Raja Ram Gautam</h2>
+            <div class="agent-title">Senior Real Estate Specialist</div>
+            <div class="agent-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <span>4.7 Rating (128 Client Reviews)</span>
+            </div>
+            
+            <p class="agent-description">
+                Welcome to <strong>Veterans Realty</strong>, where your home journey begins with confidence and trust.
+                Our lead realtor, <strong>Mr. Raja Ram Gautam</strong>, is one of the most talented, well-experienced, 
+                and highly professional agents in the Central Texas area.
+            </p>
+            
+            <!-- Your original static content as fallback -->
+            <h3 style="font-size: 1.5rem; color: #1E3A8A; margin-bottom: 15px;">Areas of Expertise</h3>
+            <ul style="list-style: disc; padding-left: 20px; color: #6B7280; margin-bottom: 25px; line-height: 1.6;">
+                <li>Residential Home Sales and Purchases</li>
+                <li>VA and FHA Loan Support</li>
+                <li>Military Relocation Assistance (Fort Cavazos Area)</li>
+                <li>Investment and Rental Properties</li>
+                <li>New Construction & First-Time Home Buyers</li>
+            </ul>
+
+            <h3 style="font-size: 1.5rem; color: #1E3A8A; margin-bottom: 15px;">Why Choose Raja Ram Gautam</h3>
+            <ul style="list-style: disc; padding-left: 20px; color: #6B7280; margin-bottom: 25px; line-height: 1.6;">
+                <li><strong>Highly Experienced:</strong> Proven track record of successful home sales and purchases.</li>
+                <li><strong>Professional & Reliable:</strong> Trusted by clients for his honesty and clear communication.</li>
+                <li><strong>Local Market Expert:</strong> Deep knowledge of Fort Cavazos, Killeen, Harker Heights, and Copperas Cove.</li>
+                <li><strong>Military Friendly:</strong> Dedicated to supporting our service members and their families.</li>
+            </ul>
+            
+            <div class="agent-stats">
+                <div class="stat glass-light">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Properties Sold</div>
+                </div>
+                <div class="stat glass-light">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Client Satisfaction</div>
+                </div>
+                <div class="stat glass-light">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+            </div>
+            
+            <div class="agent-contact">
+                <button class="contact-button contact-primary">
+                    <i class="fas fa-phone"></i> Call Raja
+                </button>
+                <button class="contact-button contact-secondary">
+                    <i class="fas fa-envelope"></i> Email Raja
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</section>
+        
+<!-- Simple PDF Downloads Section -->
+<section class="pdf-downloads-section" id="documents">
+    <div class="section-header">
+        <h2 class="section-title">Official Documents</h2>
+        <p class="section-subtitle">Download official license and compliance documents</p>
+    </div>
+    
+    <div class="pdf-cards-container">
+        {% for pdf in pdf_files %}
+        <div class="pdf-card">
+            <div class="pdf-icon">
+                <i class="fas fa-file-pdf"></i>
+            </div>
+            
+            <div class="pdf-content">
+                <h3>{{ pdf.name }}</h3>
+                <p class="pdf-size">{{ pdf.size }}</p>
+            </div>
+            
+            <a href="{% static pdf.static_path %}" download class="download-btn">
+                <i class="fas fa-download"></i>
+                Download
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="license-info">
+        <p>
+            <i class="fas fa-id-card"></i>
+            License #740027 • Rajaram Gautam • All City Real Estate, Ltd. Co.
+        </p>
+        <a href="https://www.trec.texas.gov" target="_blank" class="trec-link">
+            Verify on TREC.gov
+        </a>
+    </div>
+</section>
+
+       <!-- Customer Reviews Section -->
+<!-- Professional Reviews Section -->
+
+
+    
+<!-- Reviews Section -->
+<div class="reviews-section">
+    <!-- Header with Stats -->
+    <div class="reviews-header">
+        <div class="reviews-title-section">
+            <div class="section-badge">
+                <span class="badge-icon">⭐</span>
+                <span class="badge-text">Testimonials</span>
+            </div>
+            <h2 class="reviews-title">Trusted by Hundreds of Happy Clients</h2>
+            <p class="reviews-subtitle">Real stories from clients who found their perfect homes with our expertise</p>
+        </div>
+        
+        <!-- Stats Cards -->
+        <div class="reviews-stats-cards">
+            <div class="stats-card">
+                <div class="stats-card-inner">
+                    <div class="stats-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="stats-content">
+                        <div class="stats-number total-reviews" data-target="0">0+</div>
+                        <div class="stats-label">Verified Reviews</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats-card">
+                <div class="stats-card-inner">
+                    <div class="stats-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stats-content">
+                        <div class="stats-number avg-rating" data-target="0">0.0</div>
+                        <div class="stats-label">Average Rating</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats-card">
+                <div class="stats-card-inner">
+                    <div class="stats-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="stats-content">
+                        <div class="stats-number satisfaction-rate" data-target="0">0%</div>
+                        <div class="stats-label">Client Satisfaction</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats-card">
+                <div class="stats-card-inner">
+                    <div class="stats-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <div class="stats-content">
+                        <div class="stats-number featured-reviews" data-target="0">0</div>
+                        <div class="stats-label">Featured Reviews</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Reviews Grid -->
+    <div class="reviews-container">
+        <div class="reviews-grid">
+            <!-- Reviews will be loaded dynamically -->
+            <div class="loading-reviews">
+                <div class="loading-spinner">
+                    <div class="spinner-circle"></div>
+                    <div class="spinner-circle"></div>
+                    <div class="spinner-circle"></div>
+                </div>
+                <p class="loading-text">Loading client testimonials...</p>
+            </div>
+        </div>
+        
+        <!-- No Reviews State (Hidden by default) -->
+        <div class="no-reviews" style="display: none;">
+            <i class="fas fa-comment-slash"></i>
+            <p>No reviews found.</p>
+        </div>
+    </div>
+    
+    <!-- Pagination -->
+    <div class="reviews-pagination"></div>
+    
+    <!-- CTA Section -->
+    <div class="reviews-cta">
+        <div class="cta-content">
+            <div class="cta-icon">
+                <i class="fas fa-pen-fancy"></i>
+            </div>
+            <div class="cta-text">
+                <h3>Share Your Experience</h3>
+                <p>Help others make informed decisions by sharing your journey</p>
+            </div>
+            <button class="cta-button" id="write-review-btn">
+                <span class="btn-icon"><i class="fas fa-pen"></i></span>
+                <span class="btn-text">Write a Review</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Review Modal -->
+<div class="review-modal" id="reviewModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <div class="modal-title-section">
+                <div class="modal-badge">
+                    <i class="fas fa-star"></i>
+                    Share Your Story
+                </div>
+                <h2 class="modal-title">Tell Us About Your Experience</h2>
+                <p class="modal-subtitle">Your feedback helps us serve you better</p>
+            </div>
+            <button class="modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <form id="review-form" class="modal-form">
+            {% csrf_token %}
+            
+            <div class="form-section">
+                <h3 class="form-section-title">
+                    <span class="section-number">1</span>
+                    Personal Information
+                </h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id_name" class="form-label">
+                            <span class="label-text">Full Name</span>
+                            <span class="required">*</span>
+                        </label>
+                        <input type="text" 
+                               name="name" 
+                               id="id_name" 
+                               class="form-input"
+                               placeholder="Enter your full name"
+                               required>
+                        <div class="form-hint">Your name will be displayed with your review</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_email" class="form-label">
+                            <span class="label-text">Email Address</span>
+                            <span class="required">*</span>
+                        </label>
+                        <input type="email" 
+                               name="email" 
+                               id="id_email" 
+                               class="form-input"
+                               placeholder="Enter your email address"
+                               required>
+                        <div class="form-hint">We'll never share your email with anyone</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_location" class="form-label">
+                        <span class="label-text">Location</span>
+                    </label>
+                    <input type="text" 
+                           name="location" 
+                           id="id_location" 
+                           class="form-input"
+                           placeholder="City, State (e.g., Killeen, TX)">
+                    <div class="form-hint">Where are you located? (Optional)</div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="form-section-title">
+                    <span class="section-number">2</span>
+                    Your Rating
+                </h3>
+                <div class="rating-section">
+                    <label class="rating-label">Overall Experience</label>
+                    <div class="star-rating">
+                        <input type="radio" name="rating" id="star5" value="5" required>
+                        <label for="star5" class="star-label" data-rating="5">
+                            <i class="fas fa-star"></i>
+                            <span class="rating-text">Excellent</span>
+                        </label>
+                        
+                        <input type="radio" name="rating" id="star4" value="4">
+                        <label for="star4" class="star-label" data-rating="4">
+                            <i class="fas fa-star"></i>
+                            <span class="rating-text">Very Good</span>
+                        </label>
+                        
+                        <input type="radio" name="rating" id="star3" value="3">
+                        <label for="star3" class="star-label" data-rating="3">
+                            <i class="fas fa-star"></i>
+                            <span class="rating-text">Good</span>
+                        </label>
+                        
+                        <input type="radio" name="rating" id="star2" value="2">
+                        <label for="star2" class="star-label" data-rating="2">
+                            <i class="fas fa-star"></i>
+                            <span class="rating-text">Fair</span>
+                        </label>
+                        
+                        <input type="radio" name="rating" id="star1" value="1">
+                        <label for="star1" class="star-label" data-rating="1">
+                            <i class="fas fa-star"></i>
+                            <span class="rating-text">Poor</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="form-section-title">
+                    <span class="section-number">3</span>
+                    Your Review
+                </h3>
+                <div class="form-group">
+                    <label for="id_category" class="form-label">
+                        <span class="label-text">Experience Type</span>
+                    </label>
+                    <div class="category-select">
+                        <select name="category" id="id_category" class="form-select">
+                            <option value="">Select your experience type</option>
+                            <option value="home_purchase">Home Purchase</option>
+                            <option value="first_time_buyer">First Time Home Buyer</option>
+                            <option value="property_sale">Property Sale</option>
+                            <option value="va_loan">VA Loan Assistance</option>
+                            <option value="military">Military Relocation</option>
+                            <option value="investment">Investment Property</option>
+                            <option value="rental">Rental Assistance</option>
+                            <option value="consultation">Real Estate Consultation</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <i class="fas fa-chevron-down select-arrow"></i>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_comment" class="form-label">
+                        <span class="label-text">Your Detailed Review</span>
+                        <span class="required">*</span>
+                    </label>
+                    <textarea name="comment" 
+                              id="id_comment" 
+                              class="form-textarea"
+                              rows="5"
+                              placeholder="Share your experience in detail. What did we do well? How can we improve?"
+                              required></textarea>
+                    <div class="textarea-counter">
+                        <span class="current-count">0</span>/<span class="max-count">1000</span> characters
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_property_related" class="form-label">
+                        <span class="label-text">Property Details (Optional)</span>
+                    </label>
+                    <input type="text" 
+                           name="property_related" 
+                           id="id_property_related" 
+                           class="form-input"
+                           placeholder="e.g., 'Sold my 3-bedroom home in Killeen'">
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary modal-cancel">
+                        <i class="fas fa-times"></i>
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn-primary">
+                        <span class="submit-icon"><i class="fas fa-paper-plane"></i></span>
+                        <span class="submit-text">Submit Your Review</span>
+                    </button>
+                </div>
+                <div class="form-note">
+                    <i class="fas fa-info-circle"></i>
+                    Your review will be verified and may take 24-48 hours to appear.
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Toast Notifications -->
+<div class="toast-container">
+    <div class="toast toast-success">
+        <div class="toast-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="toast-content">
+            <div class="toast-title">Review Submitted!</div>
+            <div class="toast-message">Thank you for sharing your experience.</div>
+        </div>
+        <button class="toast-close">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <div class="toast toast-error">
+        <div class="toast-icon">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <div class="toast-content">
+            <div class="toast-title">Error</div>
+            <div class="toast-message">Please check your information and try again.</div>
+        </div>
+        <button class="toast-close">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>
+
+
+   
+</div>
+
+<!-- Modern Review Modal -->
+
+
+
+
+
+            
+        <footer class="glass-light">
+            <p>&copy; Relator Rajaram Gautam. All rights reserved. | Find your perfect home today</p>
+        </footer>
+    </div>
+
+    <!-- Add this modal at the end of your body, before the closing </body> tag -->
+<div id="agentModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; overflow-y: auto;">
+    <div class="modal-content" style="background: white; margin: 50px auto; padding: 0; border-radius: 20px; max-width: 900px; position: relative;">
+        <span class="close-modal" style="position: absolute; top: 20px; right: 25px; font-size: 35px; color: #1E3A8A; cursor: pointer; z-index: 1001;">&times;</span>
+        
+        <div id="modalAgentContent">
+            <!-- Agent details will be loaded here -->
+        </div>
+    </div>
+</div>
+
+<!-- Load your external JS files -->
+ 
+<!-- Add this data passing script BEFORE loading external JS -->
+<script>
+    window.DJANGO_DATA = {
+        csrfToken: "{{ csrf_token }}",
+        agentProfile: {% if agent_profile %}{
+            "name": "{{ agent_profile.name|escapejs }}",
+            "title": "{{ agent_profile.title|escapejs }}",
+            "photo": "{% if agent_profile.photo %}{{ agent_profile.photo.url }}{% else %}https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80{% endif %}",
+            "rating": {{ agent_profile.rating }},
+            "review_count": {{ agent_profile.review_count }},
+            "description": `{{ agent_profile.description|escapejs }}`,
+            "properties_sold": "{{ agent_profile.properties_sold|escapejs }}",
+            "client_satisfaction": "{{ agent_profile.client_satisfaction|escapejs }}",
+            "years_experience": "{{ agent_profile.years_experience|escapejs }}",
+            "phone": "{{ agent_profile.phone|escapejs }}",
+            "email": "{{ agent_profile.email|escapejs }}",
+            "first_name": "{{ agent_profile.get_first_name|escapejs }}",
+            "expertise": {{ agent_profile.get_areas_of_expertise_list|safe|default:'[]' }},
+            "why_choose": {{ agent_profile.get_why_choose_list|safe|default:'[]' }}
+        }{% else %}null{% endif %},
+        saveInterestUrl: "{% url 'listings:save_interest' %}"
+    };
+</script>
+
+
+<!-- Load external JS files -->
+<script src="{% static 'listings/js/main1.js' %}"></script>
+<script src="{% static 'listings/js/mortgage-calculator.js' %}"></script>
+<script src="{% static 'listings/js/interest-modal.js' %}"></script>
+<script src="{% static 'listings/js/agent-modal.js' %}"></script>
+
+<!-- JavaScript for review -->
+<script>
+    // Pass Django URLs to JavaScript
+    const REVIEWS_API = {
+        list: "{% url 'listings:reviews_list' %}",
+        stats: "{% url 'listings:review_stats' %}",
+        submit: "{% url 'listings:submit_review' %}",
+        helpful: "{% url 'listings:mark_helpful' '00000000-0000-0000-0000-000000000000' %}".replace('00000000-0000-0000-0000-000000000000', 'REVIEW_ID'),
+    };
+</script>
+<script>
+class ReviewsManager {
+    constructor() {
+        this.reviewsGrid = document.querySelector('.reviews-grid');
+        this.apiEndpoints = {
+            list: '/reviews/list/',
+            stats: '/reviews/stats/',
+            submit: '/reviews/submit/',
+            helpful: '/reviews/{id}/helpful/',
+        };
+        this.currentCategory = 'all';
+        this.currentPage = 1;
+        this.totalPages = 1;
+        
+        console.log('🚀 ReviewsManager initialized');
+        this.init();
+    }
+    
+    init() {
+        if (!this.reviewsGrid) {
+            console.warn('❌ Reviews grid not found');
+            return;
+        }
+        
+        console.log('✅ Reviews grid found, setting up...');
+        this.loadReviews();
+        this.setupEventListeners();
+        this.loadReviewStats();
+    }
+    
+    // Generate star rating HTML
+    generateStarRating(rating) {
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+            if (i <= rating) {
+                stars += '<i class="fas fa-star"></i>';
+            } else {
+                stars += '<i class="far fa-star"></i>';
+            }
+        }
+        return stars;
+    }
+    
+    // Create a review card HTML
+    createReviewCard(review) {
+        const featuredClass = review.featured ? 'featured' : '';
+        
+        return `
+            <div class="review-card ${featuredClass}" data-review-id="${review.id}">
+                <div class="review-header">
+                    <div class="reviewer-avatar">
+                        <img src="${review.avatar_url || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(review.name) + '&background=random'}" 
+                             alt="${review.name}" 
+                             loading="lazy">
+                    </div>
+                    <div class="reviewer-info">
+                        <h4 class="reviewer-name">${review.name}</h4>
+                        <div class="reviewer-location">
+                            <i class="fas fa-map-marker-alt"></i> ${review.location || 'Texas'}
+                        </div>
+                    </div>
+                    <div class="review-rating">
+                        ${review.stars_html || this.generateStarRating(review.rating)}
+                    </div>
+                </div>
+                
+                <div class="review-content">
+                    <p>"${review.comment}"</p>
+                </div>
+                
+                <div class="review-meta">
+                    <span class="review-date">${review.date || 'Recently'}</span>
+                    ${review.category ? `<span class="review-category">• ${review.category}</span>` : ''}
+                </div>
+                
+                ${review.property_related ? `
+                <div class="review-property">
+                    <small><i class="fas fa-home"></i> ${review.property_related}</small>
+                </div>
+                ` : ''}
+                
+                <div class="review-actions">
+                    <button class="btn-helpful" data-review-id="${review.id}">
+                        <i class="far fa-thumbs-up"></i>
+                        Helpful (${review.helpful_count || 0})
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Load reviews from API
+    async loadReviews() {
+        console.log('🔄 Loading reviews...');
+        
+        try {
+            this.showLoading();
+            
+            const params = new URLSearchParams({
+                category: this.currentCategory,
+                page: this.currentPage
+            });
+            
+            const url = `${this.apiEndpoints.list}?${params}`;
+            console.log('📡 Fetching from:', url);
+            
+            const response = await fetch(url);
+            console.log('📊 Response status:', response.status);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
+            const data = await response.json();
+            console.log('✅ API Response received');
+            console.log('📈 Reviews received:', data.reviews?.length || 0);
+            
+            // Hide no-reviews message if we have reviews
+            const noReviewsElement = document.querySelector('.no-reviews');
+            if (noReviewsElement && data.reviews?.length > 0) {
+                noReviewsElement.style.display = 'none';
+            }
+            
+            this.renderReviews(data.reviews);
+            this.updatePagination(data);
+            
+        } catch (error) {
+            console.error('❌ Error loading reviews:', error);
+            this.showError(`Failed to load reviews: ${error.message}`);
+        }
+    }
+    
+    // Render reviews to the grid
+    renderReviews(reviews) {
+        if (!reviews || reviews.length === 0) {
+            const noReviewsElement = document.querySelector('.no-reviews');
+            if (noReviewsElement) {
+                this.reviewsGrid.innerHTML = '';
+                noReviewsElement.style.display = 'block';
+            } else {
+                this.reviewsGrid.innerHTML = `
+                    <div class="no-reviews">
+                        <i class="fas fa-comment-slash"></i>
+                        <p>No reviews found.</p>
+                    </div>
+                `;
+            }
+            return;
+        }
+        
+        this.reviewsGrid.innerHTML = reviews.map(review => 
+            this.createReviewCard(review)
+        ).join('');
+        
+        this.setupHelpfulButtons();
+    }
+    
+    // Show loading state
+    showLoading() {
+        this.reviewsGrid.innerHTML = `
+            <div class="loading-reviews">
+                <div class="loading-spinner">
+                    <div class="spinner-circle"></div>
+                    <div class="spinner-circle"></div>
+                    <div class="spinner-circle"></div>
+                </div>
+                <p class="loading-text">Loading client testimonials...</p>
+            </div>
+        `;
+        
+        // Hide no-reviews message while loading
+        const noReviewsElement = document.querySelector('.no-reviews');
+        if (noReviewsElement) {
+            noReviewsElement.style.display = 'none';
+        }
+    }
+    
+    // Show error message
+    showError(message) {
+        this.reviewsGrid.innerHTML = `
+            <div class="error-reviews">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>${message}</p>
+                <button class="retry-btn">Retry</button>
+            </div>
+        `;
+        
+        this.reviewsGrid.querySelector('.retry-btn').addEventListener('click', () => {
+            this.loadReviews();
+        });
+    }
+    
+    // Load review statistics
+    async loadReviewStats() {
+        try {
+            console.log('📊 Loading review stats...');
+            const response = await fetch(this.apiEndpoints.stats);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            
+            const stats = await response.json();
+            console.log('✅ Stats loaded:', stats);
+            this.updateReviewStats(stats);
+            this.animateStats(stats);
+            
+        } catch (error) {
+            console.error('❌ Error loading stats:', error);
+        }
+    }
+    
+    // Update review statistics display
+    updateReviewStats(stats) {
+        // Update total reviews
+        const totalElement = document.querySelector('.total-reviews');
+        if (totalElement) {
+            totalElement.dataset.target = stats.total_reviews || 0;
+            totalElement.textContent = `${stats.total_reviews || 0}+`;
+        }
+        
+        // Update average rating
+        const ratingElement = document.querySelector('.avg-rating');
+        if (ratingElement) {
+            const avgRating = stats.avg_rating ? parseFloat(stats.avg_rating) : 0;
+            ratingElement.dataset.target = avgRating.toFixed(1);
+            ratingElement.textContent = `${avgRating.toFixed(1)}`;
+        }
+        
+        // Update satisfaction rate
+        const satisfactionElement = document.querySelector('.satisfaction-rate');
+        if (satisfactionElement) {
+            satisfactionElement.dataset.target = stats.satisfaction_rate || 0;
+            satisfactionElement.textContent = `${stats.satisfaction_rate || 0}%`;
+        }
+        
+        // Update featured count
+        const featuredElement = document.querySelector('.featured-reviews');
+        if (featuredElement) {
+            featuredElement.dataset.target = stats.featured_reviews || 0;
+            featuredElement.textContent = `${stats.featured_reviews || 0}`;
+        }
+    }
+    
+    // Animate stats numbers
+    animateStats(stats) {
+        const statElements = document.querySelectorAll('.stats-number[data-target]');
+        
+        statElements.forEach(stat => {
+            const target = parseFloat(stat.dataset.target);
+            const current = parseFloat(stat.textContent.replace('+', '').replace('%', ''));
+            
+            // If current is already correct, skip animation
+            if (Math.abs(current - target) < 0.1) return;
+            
+            const increment = (target - current) / 30; // 30 frames
+            let count = current;
+            
+            const timer = setInterval(() => {
+                count += increment;
+                
+                // Check if we've reached or passed the target
+                if ((increment > 0 && count >= target) || (increment < 0 && count <= target)) {
+                    count = target;
+                    clearInterval(timer);
+                }
+                
+                if (stat.classList.contains('total-reviews')) {
+                    stat.textContent = Math.floor(count) + '+';
+                } else if (stat.classList.contains('satisfaction-rate')) {
+                    stat.textContent = Math.floor(count) + '%';
+                } else if (stat.classList.contains('avg-rating')) {
+                    stat.textContent = count.toFixed(1);
+                } else {
+                    stat.textContent = Math.floor(count);
+                }
+            }, 30);
+        });
+    }
+    
+    // Update pagination
+    updatePagination(data) {
+        this.totalPages = data.total_pages || 1;
+        
+        const paginationContainer = document.querySelector('.reviews-pagination');
+        if (!paginationContainer) return;
+        
+        // Don't show pagination if only 1 page
+        if (this.totalPages <= 1) {
+            paginationContainer.innerHTML = '';
+            return;
+        }
+        
+        let paginationHTML = `
+            <button class="pagination-btn ${!data.has_previous ? 'disabled' : ''}" 
+                    data-page="${data.current_page - 1}">
+                <i class="fas fa-chevron-left"></i> Previous
+            </button>
+            
+            <div class="page-numbers">
+        `;
+        
+        // Show limited page numbers
+        const maxVisiblePages = 5;
+        let startPage = Math.max(1, data.current_page - Math.floor(maxVisiblePages / 2));
+        let endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
+        
+        // Adjust if we're at the end
+        if (endPage - startPage + 1 < maxVisiblePages) {
+            startPage = Math.max(1, endPage - maxVisiblePages + 1);
+        }
+        
+        for (let i = startPage; i <= endPage; i++) {
+            paginationHTML += `
+                <button class="page-number ${i === data.current_page ? 'active' : ''}" 
+                        data-page="${i}">
+                    ${i}
+                </button>
+            `;
+        }
+        
+        paginationHTML += `
+            </div>
+            
+            <button class="pagination-btn ${!data.has_next ? 'disabled' : ''}" 
+                    data-page="${data.current_page + 1}">
+                Next <i class="fas fa-chevron-right"></i>
+            </button>
+        `;
+        
+        paginationContainer.innerHTML = paginationHTML;
+        
+        // Add click handlers
+        paginationContainer.querySelectorAll('.pagination-btn, .page-number').forEach(btn => {
+            if (!btn.classList.contains('disabled')) {
+                btn.addEventListener('click', (e) => {
+                    const page = parseInt(e.target.dataset.page);
+                    if (page && page !== this.currentPage) {
+                        this.currentPage = page;
+                        this.loadReviews();
+                        window.scrollTo({
+                            top: this.reviewsGrid.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            }
+        });
+    }
+    
+    // Setup helpful buttons
+    setupHelpfulButtons() {
+        document.querySelectorAll('.btn-helpful').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const reviewId = e.target.closest('.btn-helpful').dataset.reviewId;
+                await this.markHelpful(reviewId, e.target.closest('.btn-helpful'));
+            });
+        });
+    }
+    
+    // Setup event listeners
+    setupEventListeners() {
+        // Create pagination container if it doesn't exist
+        if (!document.querySelector('.reviews-pagination')) {
+            const paginationDiv = document.createElement('div');
+            paginationDiv.className = 'reviews-pagination';
+            this.reviewsGrid.parentNode.appendChild(paginationDiv);
+        }
+        
+        // Submit review form handler
+        const reviewForm = document.getElementById('review-form');
+        if (reviewForm) {
+            reviewForm.addEventListener('submit', (e) => this.submitReview(e));
+        }
+    }
+    
+    // Mark review as helpful
+    async markHelpful(reviewId, button) {
+        try {
+            const response = await fetch(`/reviews/${reviewId}/helpful/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': this.getCsrfToken(),
+                },
+                body: JSON.stringify({ review_id: reviewId })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                button.innerHTML = `
+                    <i class="fas fa-thumbs-up"></i>
+                    Helpful (${data.helpful_count})
+                `;
+                button.classList.add('active');
+                this.showToast('Thank you for your feedback!', 'success');
+            } else {
+                this.showToast(data.message || 'You have already marked this as helpful', 'info');
+            }
+            
+        } catch (error) {
+            console.error('Error marking helpful:', error);
+            this.showToast('Failed to update. Please try again.', 'error');
+        }
+    }
+    
+    // Submit review form
+    // Submit review form
+async submitReview(event) {
+    event.preventDefault();
+    console.log('📝 ===== SUBMIT REVIEW START =====');
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    
+    // Log all form data
+    console.log('📋 Form Data:');
+    for (let [key, value] of formData.entries()) {
+        console.log(`  ${key}: ${value}`);
+    }
+    
+    // Check required fields
+    const requiredFields = ['name', 'email', 'rating', 'comment'];
+    let missingFields = [];
+    
+    requiredFields.forEach(field => {
+        if (!formData.get(field)) {
+            missingFields.push(field);
+        }
+    });
+    
+    if (missingFields.length > 0) {
+        console.error('❌ Missing required fields:', missingFields);
+        this.showToast(`Please fill in: ${missingFields.join(', ')}`, 'error');
+        return;
+    }
+    
+    // Check CSRF token
+    const csrfToken = this.getCsrfToken();
+    console.log(`🔐 CSRF Token: ${csrfToken ? 'Found' : 'NOT FOUND!'}`);
+    
+    try {
+        console.log('📤 Sending to:', this.apiEndpoints.submit);
+        
+        const response = await fetch(this.apiEndpoints.submit, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: formData
+        });
+        
+        console.log('📥 Response status:', response.status, response.statusText);
+        console.log('📥 Response headers:', Object.fromEntries(response.headers.entries()));
+        
+        const responseText = await response.text();
+        console.log('📦 Raw response:', responseText);
+        
+        let data;
+        try {
+            data = JSON.parse(responseText);
+            console.log('📊 Parsed response:', data);
+        } catch (e) {
+            console.error('❌ Failed to parse JSON:', e);
+            console.error('Response was:', responseText);
+            this.showToast('Server returned invalid response', 'error');
+            return;
+        }
+        
+        if (response.ok && data.success) {
+            console.log('✅ Review submitted successfully! ID:', data.review_id);
+            this.showToast(data.message || 'Thank you for your review!', 'success');
+            
+            // Reset form
+            form.reset();
+            if (document.querySelector('.current-count')) {
+                document.querySelector('.current-count').textContent = '0';
+            }
+            
+            // Close modal
+            this.closeModal();
+            
+            // Reload reviews after delay
+            setTimeout(() => {
+                console.log('🔄 Reloading reviews...');
+                this.loadReviews();
+                this.loadReviewStats();
+            }, 1500);
+            
+        } else {
+            console.error('❌ Submit failed:', data);
+            if (data.errors) {
+                console.error('Form errors:', data.errors);
+                this.showFormErrors(form, data.errors);
+                this.showToast('Please fix the errors in the form', 'error');
+            } else if (data.error) {
+                this.showToast(`Error: ${data.error}`, 'error');
+            } else {
+                this.showToast('Failed to submit review. Please try again.', 'error');
+            }
+        }
+        
+    } catch (error) {
+        console.error('❌ Network error:', error);
+        this.showToast('Network error. Please check your connection.', 'error');
+    }
+    
+    console.log('📝 ===== SUBMIT REVIEW END =====');
+}
+    // Show form errors
+    showFormErrors(form, errors) {
+        // Clear previous errors
+        form.querySelectorAll('.error-message').forEach(el => el.remove());
+        form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+        
+        // Add new errors
+        Object.keys(errors).forEach(field => {
+            const input = form.querySelector(`[name="${field}"]`);
+            if (input) {
+                input.classList.add('is-invalid');
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = errors[field][0]?.message || errors[field][0];
+                input.parentNode.appendChild(errorDiv);
+            }
+        });
+    }
+    
+    // Show toast notification
+    showToast(message, type = 'info') {
+        // Create toast container if it doesn't exist
+        let toastContainer = document.querySelector('.toast-container');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.className = 'toast-container';
+            document.body.appendChild(toastContainer);
+        }
+        
+        const toast = document.querySelector(`.toast-${type}`).cloneNode(true);
+        toast.style.display = 'flex';
+        toastContainer.appendChild(toast);
+        
+        // Update message if needed
+        const toastMessage = toast.querySelector('.toast-message');
+        if (toastMessage && message) {
+            toastMessage.textContent = message;
+        }
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            this.hideToast(toast);
+        }, 5000);
+        
+        // Close button
+        toast.querySelector('.toast-close').addEventListener('click', () => {
+            this.hideToast(toast);
+        });
+    }
+    
+    // Hide toast
+    hideToast(toast) {
+        toast.style.animation = 'toastSlideIn 0.3s ease reverse';
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 300);
+    }
+    
+    // Close modal
+    closeModal() {
+        const modal = document.getElementById('reviewModal');
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+    
+    // Get CSRF token
+    getCsrfToken() {
+        return document.querySelector('[name=csrfmiddlewaretoken]')?.value || 
+               document.cookie.match(/csrftoken=([^;]+)/)?.[1];
+    }
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('📄 DOM loaded, initializing ReviewsManager...');
+    
+    // Initialize ReviewsManager
+    const reviewsManager = new ReviewsManager();
+    
+    // Modal functionality
+    const modal = document.getElementById('reviewModal');
+    const openBtn = document.getElementById('write-review-btn');
+    const closeBtn = document.querySelector('.modal-close');
+    const cancelBtn = document.querySelector('.modal-cancel');
+    const overlay = document.querySelector('.modal-overlay');
+    
+    function openModal() {
+        if (modal) {
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+    
+    function closeModal() {
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+    
+    if (openBtn) {
+        openBtn.addEventListener('click', openModal);
+    }
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeModal);
+    }
+    
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', closeModal);
+    }
+    
+    if (overlay) {
+        overlay.addEventListener('click', closeModal);
+    }
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal && modal.style.display === 'block') {
+            closeModal();
+        }
+    });
+    
+    // Textarea character counter
+    const textarea = document.getElementById('id_comment');
+    const currentCount = document.querySelector('.current-count');
+    const maxCount = document.querySelector('.max-count');
+    const maxLength = 1000;
+    
+    if (textarea && currentCount && maxCount) {
+        maxCount.textContent = maxLength;
+        
+        textarea.addEventListener('input', function() {
+            const length = this.value.length;
+            currentCount.textContent = length;
+            
+            if (length > maxLength * 0.9) {
+                currentCount.style.color = '#ef4444';
+            } else {
+                currentCount.style.color = '#334155';
+            }
+        });
+    }
+    
+    // Star rating hover effect
+    const starLabels = document.querySelectorAll('.star-label');
+    starLabels.forEach(label => {
+        label.addEventListener('mouseenter', function() {
+            const rating = this.dataset.rating;
+            starLabels.forEach((l, index) => {
+                if (index >= 5 - rating) {
+                    l.style.opacity = '1';
+                } else {
+                    l.style.opacity = '0.5';
+                }
+            });
+        });
+        
+        label.addEventListener('mouseleave', function() {
+            starLabels.forEach(l => {
+                l.style.opacity = '1';
+            });
+        });
+    });
+    
+    // Animate stats when in viewport
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Stats are already animated by ReviewsManager
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+    
+    const statsSection = document.querySelector('.reviews-section');
+    if (statsSection) {
+        observer.observe(statsSection);
+    }
+});
+</script>
+</body>
+</html>
+
+

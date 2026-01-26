@@ -1,0 +1,122 @@
+<!-- listings/templates/listings/admin_dashboard.html -->
+{% extends 'listings/base1.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+        <h1 style="color: #1E3A8A;">Admin Dashboard</h1>
+        <div>
+            <span style="color: #6B7280;">Welcome, {{ request.user.username }}</span>
+            <a href="{% url 'listings:logout' %}" 
+               style="margin-left: 20px; padding: 10px 20px; background: #dc3545; color: white; 
+                      text-decoration: none; border-radius: 8px;">
+                Logout
+            </a>
+        </div>
+    </div>
+    
+    {% if messages %}
+    <div style="margin-bottom: 30px;">
+        {% for message in messages %}
+        <div style="padding: 15px; border-radius: 8px; margin-bottom: 10px;
+            {% if message.tags == 'error' %}background: #fee; color: #c00;{% endif %}
+            {% if message.tags == 'success' %}background: #efe; color: #090;{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <!-- Dashboard Stats -->
+    <div class="glass-card" style="padding: 30px; margin-bottom: 40px;">
+        <h2 style="color: #1E3A8A; margin-bottom: 25px;">Quick Stats</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+            <div class="stat-card" style="background: rgba(30, 58, 138, 0.1); padding: 20px; border-radius: 12px; border-left: 4px solid #1E3A8A;">
+                <div style="font-size: 2rem; font-weight: bold; color: #1E3A8A;">0</div>
+                <div style="color: #6B7280;">Total Users</div>
+            </div>
+            <div class="stat-card" style="background: rgba(249, 115, 22, 0.1); padding: 20px; border-radius: 12px; border-left: 4px solid #F97316;">
+                <div style="font-size: 2rem; font-weight: bold; color: #F97316;">0</div>
+                <div style="color: #6B7280;">Properties Listed</div>
+            </div>
+            <div class="stat-card" style="background: rgba(16, 185, 129, 0.1); padding: 20px; border-radius: 12px; border-left: 4px solid #10B981;">
+                <div style="font-size: 2rem; font-weight: bold; color: #10B981;">0</div>
+                <div style="color: #6B7280;">New Leads</div>
+            </div>
+            <div class="stat-card" style="background: rgba(139, 92, 246, 0.1); padding: 20px; border-radius: 12px; border-left: 4px solid #8B5CF6;">
+                <div style="font-size: 2rem; font-weight: bold; color: #8B5CF6;">0</div>
+                <div style="color: #6B7280;">Messages</div>
+            </div>
+      <!-- In admin_dashboard.html -->
+            <div class="admin-actions">
+                <a href="{% url 'listings:password_reset' %}" class="btn btn-warning">
+                    <i class="fas fa-key"></i> Reset Password
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Admin Actions -->
+    <div class="glass-card" style="padding: 30px;">
+        <h2 style="color: #1E3A8A; margin-bottom: 25px;">Admin Actions</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+            <a href="/admin/" style="text-decoration: none;">
+                <div class="action-card" style="background: white; padding: 25px; border-radius: 12px; 
+                     border: 2px solid #e5e7eb; text-align: center; transition: all 0.3s;">
+                    <i class="fas fa-cogs" style="font-size: 2.5rem; color: #1E3A8A; margin-bottom: 15px;"></i>
+                    <h3 style="color: #1E3A8A; margin-bottom: 10px;">Django Admin</h3>
+                    <p style="color: #6B7280;">Full administrative interface</p>
+                </div>
+            </a>
+            
+            <a href="{% url 'listings:property_list' %}" style="text-decoration: none;">
+                <div class="action-card" style="background: white; padding: 25px; border-radius: 12px; 
+                     border: 2px solid #e5e7eb; text-align: center; transition: all 0.3s;">
+                    <i class="fas fa-home" style="font-size: 2.5rem; color: #F97316; margin-bottom: 15px;"></i>
+                    <h3 style="color: #F97316; margin-bottom: 10px;">Manage Properties</h3>
+                    <p style="color: #6B7280;">View and edit property listings</p>
+                </div>
+            </a>
+            
+            <a href="#" style="text-decoration: none;">
+                <div class="action-card" style="background: white; padding: 25px; border-radius: 12px; 
+                     border: 2px solid #e5e7eb; text-align: center; transition: all 0.3s;">
+                    <i class="fas fa-users" style="font-size: 2.5rem; color: #10B981; margin-bottom: 15px;"></i>
+                    <h3 style="color: #10B981; margin-bottom: 10px;">Manage Users</h3>
+                    <p style="color: #6B7280;">View and manage user accounts</p>
+                </div>
+            </a>
+            
+            <a href="#" style="text-decoration: none;">
+                <div class="action-card" style="background: white; padding: 25px; border-radius: 12px; 
+                     border: 2px solid #e5e7eb; text-align: center; transition: all 0.3s;">
+                    <i class="fas fa-chart-line" style="font-size: 2.5rem; color: #8B5CF6; margin-bottom: 15px;"></i>
+                    <h3 style="color: #8B5CF6; margin-bottom: 10px;">Analytics</h3>
+                    <p style="color: #6B7280;">View site statistics and reports</p>
+                </div>
+            </a>
+
+            <!-- In your admin_dashboard.html, add this action card -->
+            <a href="{% url 'listings:interest_dashboard' %}" style="text-decoration: none;">
+
+                <div class="action-card" style="background: white; padding: 25px; border-radius: 12px; 
+                        border: 2px solid #e5e7eb; text-align: center; transition: all 0.3s;">
+                    <i class="fas fa-handshake" style="color: #10B981;"></i>
+                    <h3 style="color: #10B981; margin-bottom: 10px;">Manage Interests</h3>
+                    <p style="color: var(--text-light); font-size: 0.9rem;">View and manage property interests</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<style>
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-color: #1E3A8A;
+}
+</style>
+{% endblock %}

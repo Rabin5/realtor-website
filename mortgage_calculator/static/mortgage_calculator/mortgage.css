@@ -1,0 +1,33 @@
+/* EXTRA LARGE premium input fields */
+.mc-input{
+  width: 100%;
+  padding: 20px 22px;          /* ⬅️ makes height much bigger */
+  border-radius: 18px;         /* smoother corners */
+  border: 1.5px solid rgba(107,114,128,0.30);
+  background: #ffffff;
+
+  font-size: 1.25rem;          /* ⬅️ bigger text */
+  font-weight: 600;
+
+  outline: none;
+  transition: all 0.25s ease;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+}
+
+/* Even stronger focus effect */
+.mc-input:focus{
+  border-color: #F97316;
+  box-shadow:
+    0 0 0 6px rgba(249,115,22,0.20),
+    0 14px 30px rgba(249,115,22,0.25);
+  transform: translateY(-2px);
+}
+
+.mc-label{
+  font-size: 1.25rem;          /* bigger label */
+  font-weight: 800;
+  margin-bottom: 14px;
+}

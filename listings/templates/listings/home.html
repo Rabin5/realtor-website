@@ -1,0 +1,218 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Real Estate Site</title>
+  <link href="{% static 'listings/css/bootstrap.min.css' %}"rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="{% static 'listings/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'listings/css/bootstrap.min.css' %}">
+  </head>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'listings:home' %}">Veterans Realty</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#about">About Agent</a></li>
+        <li class="nav-item"><a class="nav-link" href="#buyer">Buyer</a></li>
+        <li class="nav-item"><a class="nav-link" href="#seller">Seller</a></li>
+        <li class="nav-item"><a class="nav-link" href="#questionnaire">Questionnaire</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'listings:contact' %}">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- silding image-->
+
+<style>
+@keyframes slide1 {
+  0%, 33% { opacity: 1; }
+  34%, 100% { opacity: 0; }
+}
+
+.animate-slide,
+.animate-slide2,
+.animate-slide3 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+  background-size: cover;
+  background-position: center;
+}
+
+@keyframes slide1 {
+  0%, 33% { opacity: 1; }
+  34%, 100% { opacity: 0; }
+}
+@keyframes slide2 {
+  0%, 33% { opacity: 0; }
+  34%, 66% { opacity: 1; }
+  67%, 100% { opacity: 0; }
+}
+@keyframes slide3 {
+  0%, 66% { opacity: 0; }
+  67%, 100% { opacity: 1; }
+}
+.animate-slide { animation: slide1 15s infinite; }
+.animate-slide2 { animation: slide2 15s infinite; }
+.animate-slide3 { animation: slide3 15s infinite; }
+
+
+</style>
+
+
+{% load static %}
+<section class="relative h-[90vh] overflow-hidden">
+  <!-- Background slides -->
+  <div class="absolute inset-0 animate-slide bg-center bg-no-repeat bg-contain md:bg-cover transition-all duration-1000"
+       style="background-image: url('{% static "listings/images/home11.jpg" %}');"></div>
+  <div class="absolute inset-0 animate-slide2 bg-center bg-no-repeat bg-contain md:bg-cover transition-all duration-1000"
+       style="background-image: url('{% static "listings/images/home2.jpg" %}');"></div>
+  <div class="absolute inset-0 animate-slide3 bg-center bg-no-repeat bg-contain md:bg-cover transition-all duration-1000"
+       style="background-image: url('{% static "listings/images/home3.jpg" %}');"></div>
+
+  <!-- Text Overlay -->
+  <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/60 flex flex-col items-center justify-center text-center text-white px-6 z-10">
+    <h1 class="text-5xl md:text-6xl font-extrabold mb-4 tracking-wide drop-shadow-lg">Find Your Dream Home</h1>
+    <p class="text-lg md:text-xl mb-8 max-w-2xl leading-relaxed">Serving Fort Cavazos buyers, sellers, and veterans with integrity and excellence.</p>
+    <div class="flex flex-col md:flex-row gap-4">
+      <a href="{% url 'listings:buyer_questionnaire' %}" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full text-lg shadow-lg transition">Buy a Home</a>
+      <a href="{% url 'listings:buyer_questionnaire' %}" class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-full text-lg shadow-lg transition">Sell a Home</a>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+<!-- Hero Section -->
+<section class="bg-dark text-white text-center py-5" style="background: url({% static 'listings/images/home1.jpg' %}) center/cover no-repeat;">
+  <div class="container py-5">
+    <h1 class="display-4">Find Your Dream Home Near Fort Hood</h1>
+    <p class="lead">Working with veterans, buyers & sellers with integrity and expertise.</p>
+    <a href="{% url 'listings:buyer_questionnaire' %}" class="btn btn-primary btn-lg me-2">Buy a Home</a>
+    <a href="{% url 'listings:buyer_questionnaire' %}" class="btn btn-success btn-lg">Sell Your Home</a>
+  </div>
+</section>
+
+<!-- About Agent -->
+<section id="about" class="py-5">
+  <div class="container d-flex align-items-center">
+    <div class="row align-items-center">
+      <div class="col-md-4">
+        <img src="{% static 'listings/images/img1.jpg' %}" class="img-fluid rounded-circle shadow" alt="Agent Photo">
+      </div>
+  
+
+      <!-- Realtor Information -->
+      <div>
+        <h2 class="text-4xl font-bold text-gray-800 mb-4">Meet <span class="text-blue-600">Raja Ram Gautam</span></h2>
+        <p class="text-lg text-gray-700 mb-6">
+          Welcome to <strong>Veterans Realty</strong>, where your home journey begins with confidence and trust.
+          Our lead realtor, <strong>Mr. Raja Ram Gautam</strong>, is one of the most talented, well-experienced, 
+          and highly professional agents in the Central Texas area. His dedication, honesty, and expert market 
+          knowledge make him the go-to real estate professional for families, investors, and military members alike.
+        </p>
+
+        <h3 class="text-2xl font-semibold text-gray-800 mb-3">Areas of Expertise</h3>
+        <ul class="list-disc list-inside text-gray-700 mb-6">
+          <li>Residential Home Sales and Purchases</li>
+          <li>VA and FHA Loan Support</li>
+          <li>Military Relocation Assistance (Fort Cavazos Area)</li>
+          <li>Investment and Rental Properties</li>
+          <li>New Construction & First-Time Home Buyers</li>
+        </ul>
+
+        <h3 class="text-2xl font-semibold text-gray-800 mb-3">Why Choose Raja Ram Gautam</h3>
+        <ul class="list-disc list-inside text-gray-700 mb-6">
+          <li><strong>Highly Experienced:</strong> Proven track record of successful home sales and purchases.</li>
+          <li><strong>Professional & Reliable:</strong> Trusted by clients for his honesty and clear communication.</li>
+          <li><strong>Local Market Expert:</strong> Deep knowledge of Fort Cavazos, Killeen, Harker Heights, and Copperas Cove.</li>
+          <li><strong>Military Friendly:</strong> Dedicated to supporting our service members and their families.</li>
+        </ul>
+
+        <div class="bg-blue-100 p-6 rounded-xl shadow-md">
+          <p class="text-gray-800 italic mb-3">
+            “Real estate is not just about buying or selling a property — it’s about helping people move toward their dreams.”
+          </p>
+          <p class="text-right font-semibold text-blue-700">— Raja Ram Gautam</p>
+        </div>
+
+    
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Buyer & Seller Section -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h3 class="card-title">Buyer</h3>
+            <p class="card-text">Ready to find your next home? Start here and we’ll guide you every step of the way.</p>
+            <a href="{% url 'listings:buyer_questionnaire' %}" class="btn btn-primary">Start as Buyer</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h3 class="card-title">Seller</h3>
+            <p class="card-text">Thinking of selling? Let’s get the best value for your property — fast and smooth.</p>
+            <a href="{% url 'listings:buyer_questionnaire' %}" class="btn btn-success">Start as Seller</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Questionnaire Section -->
+<section id="questionnaire" class="py-5">
+  <div class="container text-center">
+    <h2>Unsure which path is right for you?</h2>
+    <p>Take our quick questionnaire and we’ll recommend whether buying or selling is best.</p>
+    <a href="{% url 'listings:buyer_questionnaire' %}" class="btn btn-indigo btn-lg">Start Questionnaire</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer id="contact" class="bg-dark text-white py-4">
+  <div class="container text-center">
+    <h4>Veterans Realty</h4>
+    <p>Fort Cavazos, Texas | (123)-456-7890 | info@veteransrealty.com</p>
+    <small>&copy; 2025 Veterans Realty. All rights reserved.</small>
+  </div>
+</footer>
+
+
+	<script src="{% static 'listings/js/jquery.min.js' %}"></script>
+	<script src="{% static 'listings/js/popper.js' %}"></script>
+	<script src="{% static 'listings/js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'listings/js/jquery.validate.min.js'%}"></script>
+	<script src="{% static 'listings/js/main.js' %}"></script>
+
+</body>
+</html>

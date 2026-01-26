@@ -1,0 +1,151 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Real Estate Site</title>
+  <link href="{% static 'listings/css/bootstrap.min.css' %}" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'listings/css/font-awesome.min.css' %}">
+	<link rel="stylesheet" href="{% static 'listings/css/style.css' %}">
+  </head>
+</head>
+<style>
+@keyframes slide {
+  0%, 20% { opacity: 1; }
+  33.33%, 100% { opacity: 0; }
+}
+@keyframes slide2 {
+  0%, 33.33% { opacity: 0; }
+  40%, 60% { opacity: 1; }
+  66.66%, 100% { opacity: 0; }
+}
+@keyframes slide3 {
+  0%, 66.66% { opacity: 0; }
+  73%, 93% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.animate-slide { animation: slide 15s infinite; }
+.animate-slide2 { animation: slide2 15s infinite; }
+.animate-slide3 { animation: slide3 15s infinite; }
+</style>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'listings:home' %}">Veterans Realty</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#about">About Agent</a></li>
+        <li class="nav-item"><a class="nav-link" href="#buyer">Buyer</a></li>
+        <li class="nav-item"><a class="nav-link" href="#seller">Seller</a></li>
+        <li class="nav-item"><a class="nav-link" href="#questionnaire">Questionnaire</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'listings:contact' %}">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- silding image-->
+<section class="relative h-[90vh] overflow-hidden">
+  <div class="absolute inset-0 animate-slide bg-cover bg-center transition-all duration-1000"
+       style="background-image: url('{% static 'listings/images/home1.jpg' %}');"></div>
+  <div class="absolute inset-0 animate-slide2 bg-cover bg-center transition-all duration-1000"
+       style="background-image: url('{% static 'listings/images/home2.jpg' %}');"></div>
+  <div class="absolute inset-0 animate-slide3 bg-cover bg-center transition-all duration-1000"
+       style="background-image: url('{% static 'listings/images/home3.jpg' %}');"></div>
+
+  <div class="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center text-white px-6">
+    <h1 class="text-5xl font-bold mb-4">Find Your Dream Home</h1>
+    <p class="text-lg mb-6">Serving Fort Cavazos buyers, sellers, and veterans.</p>
+  </div>
+</section>
+
+
+
+
+<!-- Hero Section -->
+<!-- <section class="bg-dark text-white text-center py-5" style="background: url({% static 'listings/images/home1.jpg' %}) center/cover no-repeat;">
+  <div class="container py-5">
+    <h1 class="display-4">Find Your Dream Home Near Fort Hood</h1>
+    <p class="lead">Working with veterans, buyers & sellers with integrity and expertise.</p>
+    <a href="{% url 'listings:buyer_questionnaire' %}" class="btn btn-primary btn-lg me-2">Buy a Home</a>
+    <a href="{% url 'listings:buyer_questionnaire' %}" class="btn btn-success btn-lg">Sell Your Home</a>
+  </div>
+</section> -->
+
+<!-- About Agent -->
+<section id="about" class="py-5">
+  <div class="container d-flex align-items-center">
+    <div class="row align-items-center">
+      <div class="col-md-4">
+        <img src="{% static 'listings/images/img1.jpg' %}" class="img-fluid rounded-circle shadow" alt="Agent Photo">
+      </div>
+      <div class="col-md-8">
+        <h2>John Doe</h2>
+        <p>Licensed Realtor | Veteran | Serving Fort Cavazos & Surrounding Areas.</p>
+        <p>Phone: <a href="tel:+1234567890">123-456-7890</a><br>
+           Email: <a href="mailto:agent@veteransrealty.com">agent@veteransrealty.com</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Buyer & Seller Section -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h3 class="card-title">Buyer</h3>
+            <p class="card-text">Ready to find your next home? Start here and we’ll guide you every step of the way.</p>
+            <a href="{% url 'listings:buyer_questionnaire' %}" class="btn btn-primary">Start as Buyer</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h3 class="card-title">Seller</h3>
+            <p class="card-text">Thinking of selling? Let’s get the best value for your property — fast and smooth.</p>
+            <a href="{% url 'listings:buyer_questionnaire' %}" class="btn btn-success">Start as Seller</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Questionnaire Section -->
+<section id="questionnaire" class="py-5">
+  <div class="container text-center">
+    <h2>Unsure which path is right for you?</h2>
+    <p>Take our quick questionnaire and we’ll recommend whether buying or selling is best.</p>
+    <a href="{% url 'listings:buyer_questionnaire' %}" class="btn btn-indigo btn-lg">Start Questionnaire</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer id="contact" class="bg-dark text-white py-4">
+  <div class="container text-center">
+    <h4>Veterans Realty</h4>
+    <p>Fort Cavazos, Texas | (123)-456-7890 | info@veteransrealty.com</p>
+    <small>&copy; 2025 Veterans Realty. All rights reserved.</small>
+  </div>
+</footer>
+
+
+	<script src="{% static 'listings/js/jquery.min.js' %}"></script>
+	<script src="{% static 'listings/js/popper.js' %}"></script>
+	<script src="{% static 'listings/js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'listings/js/jquery.validate.min.js'%}"></script>
+	<script src="{% static 'listings/js/main.js' %}"></script>
+
+</body>
+</html>

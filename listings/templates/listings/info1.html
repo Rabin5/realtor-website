@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Killeen Fort Hood Area Explorer</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .map-interface {
+            display: flex;
+            gap: 20px;
+            height: 80vh;
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 25px;
+            width: 320px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .control-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .filter-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: #4a5568;
+            text-align: center;
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: #3b82f6;
+        }
+
+        .filter-btn.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .filter-btn i {
+            font-size: 1.5rem;
+        }
+
+        .locations-list {
+            flex: 1;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        .location-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .location-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .location-card h4 {
+            color: #1e3a8a;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .location-card p {
+            color: #718096;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+
+        .location-rating {
+            color: #f59e0b;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .location-type {
+            background: #e2e8f0;
+            color: #4a5568;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        .map {
+            flex: 1;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Custom marker popup styles */
+        .leaflet-popup-content {
+            margin: 15px;
+            min-width: 250px;
+        }
+
+        .popup-content img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .popup-content h3 {
+            color: #1e3a8a;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .popup-content p {
+            color: #718096;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+        }
+
+        .popup-content .rating {
+            color: #f59e0b;
+            font-weight: 600;
+        }
+
+        .popup-content .type-badge {
+            background: #3b82f6;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .map-interface {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .controls {
+                width: 100%;
+            }
+            
+            .map {
+                height: 500px;
+            }
+            
+            .filter-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Custom marker cluster styles */
+        .marker-cluster-small {
+            background-color: rgba(181, 226, 140, 0.6);
+        }
+        .marker-cluster-small div {
+            background-color: rgba(110, 204, 57, 0.6);
+        }
+
+        .marker-cluster-medium {
+            background-color: rgba(241, 211, 87, 0.6);
+        }
+        .marker-cluster-medium div {
+            background-color: rgba(240, 194, 12, 0.6);
+        }
+
+        .marker-cluster-large {
+            background-color: rgba(253, 156, 115, 0.6);
+        }
+        .marker-cluster-large div {
+            background-color: rgba(241, 128, 23, 0.6);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Killeen Fort Hood Area Explorer</h1>
+            <p>Discover restaurants, stores, schools, and more around Fort Hood</p>
+        </div>
+
+        <div class="map-interface">
+            <div class="controls">
+                <h2 class="control-title">Explore Killeen</h2>
+                
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-type="all">
+                        <i class="fas fa-layer-group"></i>
+                        All Places
+                    </button>
+                    <button class="filter-btn" data-type="restaurant">
+                        <i class="fas fa-utensils"></i>
+                        Restaurants
+                    </button>
+                    <button class="filter-btn" data-type="grocery">
+                        <i class="fas fa-shopping-cart"></i>
+                        Grocery Stores
+                    </button>
+                    <button class="filter-btn" data-type="shopping">
+                        <i class="fas fa-shopping-bag"></i>
+                        Shopping Malls
+                    </button>
+                    <button class="filter-btn" data-type="showroom">
+                        <i class="fas fa-car"></i>
+                        Car Showrooms
+                    </button>
+                    <button class="filter-btn" data-type="school">
+                        <i class="fas fa-school"></i>
+                        Schools
+                    </button>
+                    <button class="filter-btn" data-type="hospital">
+                        <i class="fas fa-hospital"></i>
+                        Hospitals
+                    </button>
+                    <button class="filter-btn" data-type="park">
+                        <i class="fas fa-tree"></i>
+                        Parks
+                    </button>
+                </div>
+
+                <div class="locations-list" id="locationsList">
+                    <!-- Locations will be populated here -->
+                </div>
+            </div>
+
+            <div class="map">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script>
+        // Fort Hood coordinates
+        const FORT_HOOD_CENTER = [31.1380, -97.7750];
+        
+        let map;
+        let markers = [];
+        let markerCluster;
+        let activeType = 'all';
+
+        // Sample data for Killeen/Fort Hood area
+        const locationsData = {
+            restaurant: [
+                {
+                    id: 1,
+                    name: "Texas Roadhouse",
+                    address: "2501 Trimmier Rd, Killeen, TX 76542",
+                    lat: 31.0925,
+                    lng: -97.7432,
+                    rating: 4.4,
+                    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop",
+                    description: "American steakhouse with Texas-style cuisine",
+                    price: "$$",
+                    type: "restaurant"
+                },
+                {
+                    id: 2,
+                    name: "Chili's Grill & Bar",
+                    address: "1100 W Central Texas Expy, Killeen, TX 76541",
+                    lat: 31.1123,
+                    lng: -97.7214,
+                    rating: 4.2,
+                    image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&h=300&fit=crop",
+                    description: "Casual dining with Tex-Mex favorites",
+                    price: "$$",
+                    type: "restaurant"
+                },
+                {
+                    id: 3,
+                    name: "Cracker Barrel",
+                    address: "3210 E Central Texas Expy, Killeen, TX 76543",
+                    lat: 31.1234,
+                    lng: -97.6543,
+                    rating: 4.3,
+                    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=300&fit=crop",
+                    description: "Southern comfort food and country store",
+                    price: "$$",
+                    type: "restaurant"
+                },
+                {
+                    id: 4,
+                    name: "Whataburger",
+                    address: "1202 W Stan Schlueter Loop, Killeen, TX 76542",
+                    lat: 31.0987,
+                    lng: -97.7321,
+                    rating: 4.1,
+                    image: "https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=400&h=300&fit=crop",
+                    description: "Texas-born burger chain",
+                    price: "$",
+                    type: "restaurant"
+                }
+            ],
+            grocery: [
+                {
+                    id: 5,
+                    name: "Walmart Supercenter",
+                    address: "1400 Lowes Blvd, Killeen, TX 76542",
+                    lat: 31.1023,
+                    lng: -97.7012,
+                    rating: 4.0,
+                    image: "https://images.unsplash.com/photo-1601593346740-925612772716?w=400&h=300&fit=crop",
+                    description: "One-stop shop for groceries and more",
+                    price: "$",
+                    type: "grocery"
+                },
+                {
+                    id: 6,
+                    name: "H-E-B Plus",
+                    address: "2300 E Central Texas Expy, Killeen, TX 76543",
+                    lat: 31.1189,
+                    lng: -97.6789,
+                    rating: 4.5,
+                    image: "https://images.unsplash.com/photo-1583258292688-d0213dc5a3a8?w=400&h=300&fit=crop",
+                    description: "Large Texas-based grocery store",
+                    price: "$$",
+                    type: "grocery"
+                },
+                {
+                    id: 7,
+                    name: "Kroger",
+                    address: "3200 S W S Young Dr, Killeen, TX 76542",
+                    lat: 31.0854,
+                    lng: -97.7234,
+                    rating: 4.2,
+                    image: "https://images.unsplash.com/photo-1601593346740-925612772716?w=400&h=300&fit=crop",
+                    description: "Full-service grocery store",
+                    price: "$$",
+                    type: "grocery"
+                }
+            ],
+            shopping: [
+                {
+                    id: 8,
+                    name: "Killeen Mall",
+                    address: "2100 S W S Young Dr, Killeen, TX 76543",
+                    lat: 31.0789,
+                    lng: -97.7345,
+                    rating: 4.1,
+                    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
+                    description: "Regional shopping mall with major retailers",
+                    type: "shopping"
+                }
+            ],
+            showroom: [
+                {
+                    id: 9,
+                    name: "Cavender Toyota",
+                    address: "5000 E Central Texas Expy, Killeen, TX 76543",
+                    lat: 31.1345,
+                    lng: -97.6234,
+                    rating: 4.4,
+                    image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=400&h=300&fit=crop",
+                    description: "Toyota dealership and showroom",
+                    type: "showroom"
+                }
+            ],
+            school: [
+                {
+                    id: 10,
+                    name: "Killeen High School",
+                    address: "500 N 38th St, Killeen, TX 76543",
+                    lat: 31.0956,
+                    lng: -97.7123,
+                    rating: 4.0,
+                    image: "https://images.unsplash.com/photo-1591123120675-6f7f1aae0e5b?w=400&h=300&fit=crop",
+                    description: "Public high school in Killeen ISD",
+                    type: "school"
+                }
+            ],
+            hospital: [
+                {
+                    id: 11,
+                    name: "Carl R. Darnall Army Medical Center",
+                    address: "36000 Darnall Loop, Fort Hood, TX 76544",
+                    lat: 31.1456,
+                    lng: -97.7890,
+                    rating: 4.2,
+                    image: "https://images.unsplash.com/photo-1516549655669-df6654e447d9?w=400&h=300&fit=crop",
+                    description: "Military hospital on Fort Hood",
+                    type: "hospital"
+                }
+            ],
+            park: [
+                {
+                    id: 12,
+                    name: "Killeen Community Park",
+                    address: "2201 E Veterans Memorial Blvd, Killeen, TX 76543",
+                    lat: 31.0890,
+                    lng: -97.6789,
+                    rating: 4.4,
+                    image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop",
+                    description: "Large community park with playgrounds and trails",
+                    type: "park"
+                }
+            ]
+        };
+
+        // Get all locations for "all" type
+        function getAllLocations() {
+            const allLocations = [];
+            Object.values(locationsData).forEach(locations => {
+                allLocations.push(...locations);
+            });
+            return allLocations;
+        }
+
+        // Initialize Map
+        function initMap() {
+            // Create map with satellite-like tiles
+            map = L.map('map').setView(FORT_HOOD_CENTER, 12);
+
+            // Add satellite-style tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+
+            // Add alternative satellite-style tiles (optional)
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: '© Esri',
+                maxZoom: 19
+            }).addTo(map);
+
+            // Initialize marker cluster
+            markerCluster = L.markerClusterGroup({
+                chunkedLoading: true,
+                maxClusterRadius: 50
+            });
+
+            map.addLayer(markerCluster);
+
+            // Add Fort Hood marker
+            const fortHoodIcon = L.divIcon({
+                html: '<div style="background: #F97316; color: white; padding: 8px 12px; border-radius: 20px; font-weight: bold; border: 2px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">FORT HOOD</div>',
+                className: 'fort-hood-label',
+                iconSize: [100, 30],
+                iconAnchor: [50, 15]
+            });
+
+            L.marker(FORT_HOOD_CENTER, { icon: fortHoodIcon }).addTo(map);
+
+            // Load initial locations (all)
+            showLocations('all');
+        }
+
+        // Show locations based on type
+        function showLocations(type) {
+            activeType = type;
+            
+            // Clear existing markers
+            clearMarkers();
+            
+            // Clear locations list
+            const locationsList = document.getElementById('locationsList');
+            locationsList.innerHTML = '';
+            
+            // Get locations for selected type
+            let locations = [];
+            if (type === 'all') {
+                locations = getAllLocations();
+            } else {
+                locations = locationsData[type] || [];
+            }
+            
+            // Add markers to map and populate list
+            locations.forEach(location => {
+                addMarker(location);
+                addLocationToList(location);
+            });
+            
+            // Update button states
+            updateButtonStates(type);
+        }
+
+        // Add marker to map
+        function addMarker(location) {
+            const colorMap = {
+                restaurant: '#EF4444',
+                grocery: '#10B981',
+                shopping: '#8B5CF6',
+                showroom: '#F59E0B',
+                school: '#3B82F6',
+                hospital: '#DC2626',
+                park: '#22C55E'
+            };
+
+            const color = colorMap[location.type] || '#6B7280';
+
+            // Create custom marker with label
+            const customIcon = L.divIcon({
+                html: `
+                    <div style="
+                        background: ${color}; 
+                        color: white; 
+                        padding: 6px 10px; 
+                        border-radius: 15px; 
+                        font-weight: bold; 
+                        font-size: 0.8rem;
+                        border: 2px solid white;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+                        white-space: nowrap;
+                        max-width: 150px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    ">${location.name}</div>
+                `,
+                className: 'custom-marker',
+                iconSize: [120, 30],
+                iconAnchor: [60, 15]
+            });
+
+            const marker = L.marker([location.lat, location.lng], { 
+                icon: customIcon 
+            });
+
+            // Add popup with location details
+            const popupContent = createPopupContent(location);
+            marker.bindPopup(popupContent, {
+                maxWidth: 300,
+                className: 'custom-popup'
+            });
+
+            markerCluster.addLayer(marker);
+            markers.push(marker);
+
+            // Add click event to center map
+            marker.on('click', function() {
+                map.setView([location.lat, location.lng], 15);
+            });
+        }
+
+        // Create popup content
+        function createPopupContent(location) {
+            const typeLabels = {
+                restaurant: 'Restaurant',
+                grocery: 'Grocery Store',
+                shopping: 'Shopping Mall',
+                showroom: 'Car Showroom',
+                school: 'School',
+                hospital: 'Hospital',
+                park: 'Park'
+            };
+
+            return `
+                <div class="popup-content">
+                    <img src="${location.image}" alt="${location.name}">
+                    <div class="type-badge">${typeLabels[location.type]}</div>
+                    <h3>${location.name}</h3>
+                    <p>${location.description}</p>
+                    <p><strong>Address:</strong> ${location.address}</p>
+                    <p class="rating"><strong>Rating:</strong> ${location.rating}/5 ⭐</p>
+                    ${location.price ? `<p><strong>Price Range:</strong> ${location.price}</p>` : ''}
+                </div>
+            `;
+        }
+
+        // Add location to sidebar list
+        function addLocationToList(location) {
+            const locationsList = document.getElementById('locationsList');
+            
+            const typeLabels = {
+                restaurant: 'Restaurant',
+                grocery: 'Grocery',
+                shopping: 'Shopping',
+                showroom: 'Showroom',
+                school: 'School',
+                hospital: 'Hospital',
+                park: 'Park'
+            };
+
+            const locationCard = document.createElement('div');
+            locationCard.className = 'location-card';
+            locationCard.innerHTML = `
+                <div class="location-type">${typeLabels[location.type]}</div>
+                <h4>${location.name}</h4>
+                <p>${location.address}</p>
+                <p class="location-rating">${location.rating} ⭐</p>
+                ${location.price ? `<p>${location.price}</p>` : ''}
+            `;
+            
+            locationCard.addEventListener('click', () => {
+                map.setView([location.lat, location.lng], 15);
+                // Open popup for this location
+                markers.forEach(marker => {
+                    if (marker.getLatLng().lat === location.lat && marker.getLatLng().lng === location.lng) {
+                        marker.openPopup();
+                    }
+                });
+            });
+            
+            locationsList.appendChild(locationCard);
+        }
+
+        // Clear all markers
+        function clearMarkers() {
+            markerCluster.clearLayers();
+            markers = [];
+        }
+
+        // Update button active states
+        function updateButtonStates(activeType) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.dataset.type === activeType) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        // Event listeners for filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                showLocations(btn.dataset.type);
+            });
+        });
+
+        // Initialize the map when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initMap();
+        });
+    </script>
+</body>
+</html>
