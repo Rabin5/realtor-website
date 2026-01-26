@@ -1,0 +1,163 @@
+<!-- listings/templates/listings/interest_analytics.html -->
+{% extends 'listings/base1.html' %}
+{% load static %}
+
+{% block title %}Property Interest Analytics - Luxury Homes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+        <h1 style="color: var(--primary-color);">Property Interest Analytics</h1>
+        <div>
+            <a href="{% url 'listings:interest_dashboard' %}" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+    
+    <!-- Stats Overview -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px;">
+        <div class="glass-card" style="text-align: center;">
+            <div style="font-size: 2.5rem; font-weight: 700; color: var(--primary-color);">{{ total }}</div>
+            <div style="color: var(--text-light);">Total Interests</div>
+        </div>
+        <div class="glass-card" style="text-align: center;">
+            <div style="font-size: 2.5rem; font-weight: 700; color: var(--success-color);">{{ buyers }}</div>
+            <div style="color: var(--text-light);">Buyers</div>
+        </div>
+        <div class="glass-card" style="text-align: center;">
+            <div style="font-size: 2.5rem; font-weight: 700; color: var(--secondary-color);">{{ sellers }}</div>
+            <div style="color: var(--text-light);">Sellers</div>
+        </div>
+        <div class="glass-card" style="text-align: center;">
+            <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent-color);">{{ new }}</div>
+            <div style="color: var(--text-light);">New (Not Contacted)</div>
+        </div>
+    </div>
+    
+    <!-- Distribution Charts -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px;">
+        <!-- Status Distribution -->
+        <div class="glass-card">
+            <h3 style="color: var(--primary-color); margin-bottom: 20px;">Status Distribution</h3>
+            {% if status_distribution %}
+                {% for status, count in status_distribution.items %}
+                <div style="margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="color: var(--text-color);">{{ status }}</span>
+                        <span style="font-weight: 600; color: var(--primary-color);">{{ count }}</span>
+                    </div>
+                    <div style="height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden;">
+                        <div style="height: 100%; width: {% widthratio count total 100 %}%; 
+                            background: 
+                            {% if status == 'New' %}var(--accent-color)
+                            {% elif status == 'Contacted' %}var(--success-color)
+                            {% elif status == 'In Progress' %}var(--warning-color)
+                            {% elif status == 'Qualified' %}#8B5CF6
+                            {% elif status == 'Closed' %}var(--text-light)
+                            {% else %}var(--error-color){% endif %};">
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p style="color: var(--text-light); text-align: center;">No data available</p>
+            {% endif %}
+        </div>
+        
+        <!-- Property Type Distribution -->
+        <div class="glass-card">
+            <h3 style="color: var(--primary-color); margin-bottom: 20px;">Property Type Distribution</h3>
+            {% if property_type_distribution %}
+                {% for prop_type, count in property_type_distribution.items %}
+                <div style="margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="color: var(--text-color);">{{ prop_type }}</span>
+                        <span style="font-weight: 600; color: var(--secondary-color);">{{ count }}</span>
+                    </div>
+                    <div style="height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden;">
+                        <div style="height: 100%; width: {% widthratio count total 100 %}%; background: var(--secondary-color);"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p style="color: var(--text-light); text-align: center;">No data available</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Timeline Distribution -->
+    <div class="glass-card">
+        <h3 style="color: var(--primary-color); margin-bottom: 20px;">Timeline Distribution</h3>
+        {% if timeline_distribution %}
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                {% for timeline, count in timeline_distribution.items %}
+                <div style="text-align: center;">
+                    <div style="font-size: 1.8rem; font-weight: 700; color: var(--primary-color);">{{ count }}</div>
+                    <div style="color: var(--text-light); font-size: 0.9rem;">{{ timeline }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="color: var(--text-light); text-align: center;">No data available</p>
+        {% endif %}
+    </div>
+    
+    <!-- Summary -->
+    <div class="glass-card" style="margin-top: 30px;">
+        <h3 style="color: var(--primary-color); margin-bottom: 20px;">Summary</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+            <div>
+                <div style="color: var(--text-light);">Buyer to Seller Ratio</div>
+                <div style="font-size: 1.5rem; font-weight: 600; color: var(--primary-color);">
+                    {% if sellers > 0 %}
+                        {{ buyers|floatformat:1 }}:{{ sellers|floatformat:1 }}
+                    {% else %}
+                        {{ buyers }}:0
+                    {% endif %}
+                </div>
+            </div>
+            <div>
+                <div style="color: var(--text-light);">New Interests Today</div>
+                <div style="font-size: 1.5rem; font-weight: 600; color: var(--success-color);">
+                    {{ today_interests|default:"0" }}
+                </div>
+            </div>
+            <div>
+                <div style="color: var(--text-light);">Last 30 Days</div>
+                <div style="font-size: 1.5rem; font-weight: 600; color: var(--secondary-color);">
+                    {{ recent_interests|default:"0" }}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div style="display: flex; gap: 15px; margin-top: 40px;">
+        <a href="{% url 'listings:interest_dashboard' %}" class="btn btn-primary">
+            <i class="fas fa-table"></i> View All Interests
+        </a>
+        <button onclick="window.print()" class="btn btn-secondary">
+            <i class="fas fa-print"></i> Print Report
+        </button>
+        <a href="{% url 'listings:admin_dashboard' %}" class="btn">
+            <i class="fas fa-tachometer-alt"></i> Back to Admin Dashboard
+        </a>
+    </div>
+</div>
+
+<script>
+// Simple chart animation
+document.addEventListener('DOMContentLoaded', function() {
+    const bars = document.querySelectorAll('.glass-card > div > div > div > div');
+    bars.forEach(bar => {
+        const originalWidth = bar.style.width;
+        bar.style.width = '0%';
+        setTimeout(() => {
+            bar.style.width = originalWidth;
+            bar.style.transition = 'width 1s ease-in-out';
+        }, 100);
+    });
+});
+</script>
+{% endblock %}

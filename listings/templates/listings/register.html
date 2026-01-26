@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Relator Rajaram Gautam
+</title>
+    <link rel="stylesheet" href="{% static 'listings/css/info.css' %}">
+    <link rel="stylesheet" href="{% static 'listings/css/info1.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                <h1>Relator Rajaram Gautam
+</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'listings:property_list' %}" class="glass-light">Home</a></li>
+                    <li><a href="{% url 'listings:login' %}" class="glass-light">Login</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <div class="glass-card" style="max-width: 450px; margin: 80px auto; padding: 40px; border-radius: 20px;">
+            <h2 style="text-align: center; color: #1E3A8A; margin-bottom: 30px;">Create Account</h2>
+            
+            {% if messages %}
+            <div style="margin-bottom: 25px;">
+                {% for message in messages %}
+                <div style="padding: 12px; border-radius: 8px; margin-bottom: 10px;
+                    {% if message.tags == 'error' %}background: rgba(220, 53, 69, 0.1); color: #dc3545;{% endif %}
+                    {% if message.tags == 'success' %}background: rgba(25, 135, 84, 0.1); color: #198754;{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <form method="POST" action="{% url 'listings:register' %}">
+                {% csrf_token %}
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; color: #6B7280;">Username</label>
+                    <input type="text" name="username" required 
+                           style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                    <small style="color: #999; font-size: 0.85rem;">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; color: #6B7280;">Password</label>
+                    <input type="password" name="password1" required 
+                           style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                    <small style="color: #999; font-size: 0.85rem;">
+                        • At least 8 characters<br>
+                        • Not too common<br>
+                        • Not entirely numeric
+                    </small>
+                </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <label style="display: block; margin-bottom: 8px; color: #6B7280;">Confirm Password</label>
+                    <input type="password" name="password2" required 
+                           style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                    <small style="color: #999; font-size: 0.85rem;">Enter the same password as above, for verification.</small>
+                </div>
+                
+                <button type="submit" 
+                        style="width: 100%; padding: 15px; background: #1E3A8A; color: white; 
+                               border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer; font-weight: 600;">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+            </form>
+            
+            <div style="text-align: center; margin-top: 30px; color: #6B7280;">
+                <p>Already have an account? 
+                    <a href="{% url 'listings:login' %}" style="color: #F97316; text-decoration: none; font-weight: 600;">
+                        Login Here
+                    </a>
+                </p>
+                
+                <div style="margin-top: 25px; padding: 15px; background: rgba(249, 115, 22, 0.05); border-radius: 8px;">
+                    <p style="margin: 0; font-size: 0.9rem;">
+                        <i class="fas fa-shield-alt" style="color: #F97316;"></i>
+                        Your information is secure and will only be used for account management.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="glass-light" style="margin-top: 100px;">
+            <p>&copy; 2023 Relator Rajaram Gautam
+ Real Estate. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

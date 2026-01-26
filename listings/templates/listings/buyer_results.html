@@ -1,0 +1,7 @@
+
+<h2>Recommended Properties</h2>
+<p>You selected: {{ answers.property_type }}, {{ answers.budget }}, {{ answers.location }}</p>
+
+{% for property in properties %}
+  <div>{{ property.name }} - {{ property.price }}</div>
+{% endfor %}

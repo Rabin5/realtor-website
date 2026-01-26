@@ -1,0 +1,381 @@
+<!-- listings/templates/listings/interest_detail.html -->
+{% extends 'listings/base1.html' %}
+{% load static %}
+
+{% block title %}{{ interest.name }} - Property Interest - Luxury Homes{% endblock %}
+
+{% block extra_css %}
+<style>
+    .detail-header {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin-bottom: 40px;
+    }
+    
+    .info-section {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .info-item {
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .info-item:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    
+    .info-label {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+    
+    .info-value {
+        color: var(--text-color);
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+    
+    .actions-container {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .action-form {
+        margin-bottom: 25px;
+    }
+    
+    .action-form:last-child {
+        margin-bottom: 0;
+    }
+    
+    .notes-container {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .notes-content {
+        background: var(--bg-light);
+        padding: 20px;
+        border-radius: 10px;
+        min-height: 100px;
+        white-space: pre-wrap;
+        font-family: monospace;
+        font-size: 0.9rem;
+    }
+    
+    .btn-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 40px;
+        color: var(--text-light);
+    }
+    
+    textarea, select, input[type="datetime-local"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 1rem;
+        margin-top: 8px;
+    }
+    
+    .badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        display: inline-block;
+    }
+    
+    .badge-type-buyer { background: rgba(30, 58, 138, 0.1); color: var(--primary-color); }
+    .badge-type-seller { background: rgba(249, 115, 22, 0.1); color: var(--secondary-color); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <div>
+            <a href="{% url 'listings:interest_dashboard' %}" class="btn" style="margin-bottom: 10px;">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+            <h1 style="color: var(--primary-color); margin-top: 10px;">Property Interest Details</h1>
+        </div>
+        <div>
+            <span class="badge badge-type-{{ interest.interest_type }}">
+                {{ interest.get_interest_type_display }}
+            </span>
+        </div>
+    </div>
+    
+    <!-- Contact Information -->
+    <div class="detail-header">
+        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px;">
+            <div>
+                <h2 style="color: var(--primary-color); margin-bottom: 5px;">{{ interest.name }}</h2>
+                <p style="color: var(--text-light); margin-bottom: 5px;">{{ interest.email }}</p>
+                <p style="color: var(--text-light);">{{ interest.phone|default:"No phone provided" }}</p>
+            </div>
+            <div style="text-align: right;">
+                <div style="color: var(--text-light); font-size: 0.9rem;">Submitted</div>
+                <div style="font-weight: 600;">{{ interest.created_at|date:"F d, Y" }}</div>
+                <div style="color: var(--text-light);">{{ interest.created_at|date:"h:i A" }}</div>
+            </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 20px;">
+            <div>
+                <div style="color: var(--text-light); font-size: 0.9rem;">Status</div>
+                <div style="font-weight: 600; color: {% if interest.status == 'new' %}var(--accent-color){% elif interest.status == 'contacted' %}var(--success-color){% elif interest.status == 'in_progress' %}var(--warning-color){% else %}var(--text-color){% endif %}">
+                    {{ interest.get_status_display }}
+                </div>
+            </div>
+            <div>
+                <div style="color: var(--text-light); font-size: 0.9rem;">Priority</div>
+                <div style="font-weight: 600; color: {% if interest.priority == 'high' %}var(--error-color){% elif interest.priority == 'urgent' %}var(--error-color){% elif interest.priority == 'medium' %}var(--warning-color){% else %}var(--success-color){% endif %}">
+                    {{ interest.get_priority_display }}
+                </div>
+            </div>
+            <div>
+                <div style="color: var(--text-light); font-size: 0.9rem;">Assigned To</div>
+                <div style="font-weight: 600;">
+                    {{ interest.assigned_to.username|default:"Unassigned" }}
+                </div>
+            </div>
+            <div>
+                <div style="color: var(--text-light); font-size: 0.9rem;">Contacted</div>
+                <div style="font-weight: 600;">
+                    {% if interest.contacted_date %}
+                    {{ interest.contacted_date|date:"M d, Y" }}
+                    {% else %}
+                    Not contacted
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="info-grid">
+        <!-- Property Information -->
+        <div class="info-section">
+            <h3 style="color: var(--primary-color); margin-bottom: 20px;">
+                <i class="fas fa-home"></i> Property Information
+            </h3>
+            
+            <div class="info-item">
+                <div class="info-label">Property Type</div>
+                <div class="info-value">{{ interest.get_property_type_display }}</div>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-label">Timeline</div>
+                <div class="info-value">{{ interest.get_timeline_display }}</div>
+            </div>
+            
+            {% if interest.interest_type == 'buyer' %}
+            <div class="info-item">
+                <div class="info-label">Budget Range</div>
+                <div class="info-value">{{ interest.get_budget_display|default:"Not specified" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Pre-Approved</div>
+                <div class="info-value">{{ interest.pre_approved|default:"Not specified" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Bedrooms</div>
+                <div class="info-value">{{ interest.bedrooms|default:"Not specified" }}</div>
+            </div>
+            {% else %}
+            <div class="info-item">
+                <div class="info-label">Property Value</div>
+                <div class="info-value">{{ interest.get_property_value_display|default:"Not specified" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Agent Experience</div>
+                <div class="info-value">{{ interest.agent_experience|default:"Not specified" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Property Condition</div>
+                <div class="info-value">{{ interest.property_condition|default:"Not specified" }}</div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="info-section">
+            <h3 style="color: var(--primary-color); margin-bottom: 20px;">
+                <i class="fas fa-bolt"></i> Quick Actions
+            </h3>
+            
+            <form method="POST" class="action-form">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="update_status">
+                <div style="margin-bottom: 15px;">
+                    <div class="info-label">Update Status</div>
+                    <select name="status" class="form-select">
+                        {% for key, value in interest.STATUS_CHOICES %}
+                        <option value="{{ key }}" {% if interest.status == key %}selected{% endif %}>{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-sync"></i> Update Status
+                </button>
+            </form>
+            
+            <form method="POST" class="action-form">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="update_priority">
+                <div style="margin-bottom: 15px;">
+                    <div class="info-label">Update Priority</div>
+                    <select name="priority" class="form-select">
+                        {% for key, value in interest.PRIORITY_CHOICES %}
+                        <option value="{{ key }}" {% if interest.priority == key %}selected{% endif %}>{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-secondary" style="width: 100%;">
+                    <i class="fas fa-flag"></i> Update Priority
+                </button>
+            </form>
+            
+            <form method="POST" class="action-form">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="assign_to">
+                <div style="margin-bottom: 15px;">
+                    <div class="info-label">Assign To</div>
+                    <select name="assigned_to" class="form-select">
+                        <option value="">Unassign</option>
+                        {% for user in staff_users %}
+                        <option value="{{ user.id }}" {% if interest.assigned_to == user %}selected{% endif %}>{{ user.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn" style="width: 100%; background: var(--accent-color); color: white;">
+                    <i class="fas fa-user-tag"></i> Assign
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Notes Section -->
+    <div class="notes-container">
+        <h3 style="color: var(--primary-color); margin-bottom: 20px;">
+            <i class="fas fa-sticky-note"></i> Notes & Follow-ups
+        </h3>
+        
+        <form method="POST" style="margin-bottom: 25px;">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="add_note">
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--text-light);">Add Note</label>
+                <textarea name="note" rows="4" placeholder="Add a note about this interest..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Note
+            </button>
+        </form>
+        
+        <form method="POST" style="margin-bottom: 25px;">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="schedule_followup">
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--text-light);">Schedule Follow-up</label>
+                <input type="datetime-local" name="followup_date">
+            </div>
+            <button type="submit" class="btn btn-secondary">
+                <i class="fas fa-calendar-plus"></i> Schedule Follow-up
+            </button>
+        </form>
+        
+        <div>
+            <label style="display: block; margin-bottom: 8px; color: var(--text-light);">Notes</label>
+            {% if interest.notes %}
+            <div class="notes-content">{{ interest.notes }}</div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-sticky-note" style="font-size: 2rem; margin-bottom: 10px; color: #e2e8f0;"></i>
+                <p>No notes yet</p>
+            </div>
+            {% endif %}
+        </div>
+        
+        {% if interest.follow_up_date %}
+        <div style="margin-top: 20px; padding: 15px; background: rgba(245, 158, 11, 0.1); border-radius: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-calendar-alt" style="color: var(--warning-color);"></i>
+                <div>
+                    <div style="font-weight: 600; color: var(--warning-color);">Follow-up Scheduled</div>
+                    <div style="color: var(--text-color);">{{ interest.follow_up_date|date:"F d, Y h:i A" }}</div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Additional Message -->
+    {% if interest.message %}
+    <div class="info-section" style="margin-top: 30px;">
+        <h3 style="color: var(--primary-color); margin-bottom: 20px;">
+            <i class="fas fa-comment"></i> Additional Message
+        </h3>
+        <div style="background: var(--bg-light); padding: 20px; border-radius: 10px;">
+            {{ interest.message|linebreaks }}
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Action Buttons -->
+    <div class="btn-group">
+        <a href="mailto:{{ interest.email }}?subject=Regarding your interest in Luxury Homes&body=Dear {{ interest.name }},%0D%0A%0D%0AThank you for your interest in our properties. We would like to follow up with you regarding your inquiry." 
+           class="btn btn-primary">
+            <i class="fas fa-envelope"></i> Send Email
+        </a>
+        
+        {% if interest.phone %}
+        <a href="tel:{{ interest.phone }}" class="btn btn-secondary">
+            <i class="fas fa-phone"></i> Call {{ interest.name|truncatechars:15 }}
+        </a>
+        {% endif %}
+        
+        <form method="POST" action="{% url 'listings:delete_interest' interest.id %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn" style="background: var(--error-color); color: white;" 
+                    onclick="return confirm('Are you sure you want to delete this interest?')">
+                <i class="fas fa-trash"></i> Delete
+            </button>
+        </form>
+        
+        <a href="{% url 'listings:interest_dashboard' %}" class="btn">
+            <i class="fas fa-times"></i> Close
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit a Review - Real Estate Platform</title>
+    <style>
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e6ef;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        /* Form styling */
+        .review-form {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+
+        .form-label .required {
+            color: #e74c3c;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e6ef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-control.is-invalid {
+            border-color: #e74c3c;
+        }
+
+        .form-text {
+            display: block;
+            margin-top: 5px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Rating stars */
+        .rating-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .stars {
+            display: flex;
+            gap: 5px;
+            direction: rtl;
+        }
+
+        .star {
+            font-size: 2.5rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .star:hover,
+        .star:hover ~ .star {
+            color: #f39c12;
+        }
+
+        .star.active {
+            color: #f39c12;
+        }
+
+        .rating-text {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        /* Form sections */
+        .form-section {
+            margin-bottom: 35px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e0e6ef;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .form-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        /* Checkbox styling */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #3498db;
+        }
+
+        /* Submit button */
+        .submit-btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #2980b9, #1c6ca4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(41, 128, 185, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Messages */
+        .messages {
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background-color: #d5edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .review-form {
+                padding: 25px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .star {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Share Your Experience</h1>
+            <p>Your feedback helps us improve and assists others in making informed decisions</p>
+        </div>
+
+        <div class="messages">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <form id="reviewForm" method="POST" class="review-form" novalidate>
+            {% csrf_token %}
+            
+            <!-- Hidden rating input -->
+            <input type="hidden" name="rating" id="ratingValue" value="5">
+            
+            <!-- Section 1: Rating & Basic Info -->
+            <div class="form-section">
+                <h3>Your Overall Rating</h3>
+                <div class="form-group">
+                    <div class="rating-container">
+                        <div class="stars" id="starRating">
+                            <span class="star" data-value="5">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star active" data-value="1">★</span>
+                        </div>
+                        <span class="rating-text" id="ratingText">Excellent - 5 stars</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="name" class="form-label">
+                        Your Name <span class="required">*</span>
+                    </label>
+                    <input type="text" 
+                           id="name" 
+                           name="name" 
+                           class="form-control" 
+                           placeholder="Enter your full name"
+                           value="{{ form.name.value|default:'' }}"
+                           required>
+                    <div class="error-message" id="nameError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        Email Address <span class="required">*</span>
+                    </label>
+                    <input type="email" 
+                           id="email" 
+                           name="email" 
+                           class="form-control" 
+                           placeholder="Enter your email"
+                           value="{{ form.email.value|default:'' }}"
+                           required>
+                    <div class="error-message" id="emailError"></div>
+                </div>
+            </div>
+
+            <!-- Section 2: Review Details -->
+            <div class="form-section">
+                <h3>Review Details</h3>
+                
+                <div class="form-group">
+                    <label for="comment" class="form-label">
+                        Your Review <span class="required">*</span>
+                    </label>
+                    <textarea id="comment" 
+                              name="comment" 
+                              class="form-control" 
+                              rows="6"
+                              placeholder="Share your detailed experience..."
+                              required>{{ form.comment.value|default:'' }}</textarea>
+                    <div class="form-text">Please be specific about your experience. What did you like? What could be improved?</div>
+                    <div class="error-message" id="commentError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="location" class="form-label">Location</label>
+                    <input type="text" 
+                           id="location" 
+                           name="location" 
+                           class="form-control" 
+                           placeholder="City, State or Country"
+                           value="{{ form.location.value|default:'' }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="category" class="form-label">Category</label>
+                    <select id="category" name="category" class="form-control">
+                        <option value="">Select a category</option>
+                        <option value="rental" {% if form.category.value == 'rental' %}selected{% endif %}>Rental Experience</option>
+                        <option value="buying" {% if form.category.value == 'buying' %}selected{% endif %}>Buying Experience</option>
+                        <option value="selling" {% if form.category.value == 'selling' %}selected{% endif %}>Selling Experience</option>
+                        <option value="agent" {% if form.category.value == 'agent' %}selected{% endif %}>Agent Experience</option>
+                        <option value="property" {% if form.category.value == 'property' %}selected{% endif %}>Property Review</option>
+                        <option value="service" {% if form.category.value == 'service' %}selected{% endif %}>Service Review</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Section 3: Property Info (Optional) -->
+            <div class="form-section">
+                <h3>Property Information (Optional)</h3>
+                
+                <div class="form-group">
+                    <label for="property_related" class="form-label">Property Address (if applicable)</label>
+                    <input type="text" 
+                           id="property_related" 
+                           name="property_related" 
+                           class="form-control" 
+                           placeholder="e.g., 123 Main St, Anytown, USA"
+                           value="{{ form.property_related.value|default:'' }}">
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" 
+                               id="terms" 
+                               name="terms" 
+                               required>
+                        <label for="terms" class="form-label">
+                            I confirm that this review is based on my genuine experience and complies with the platform's guidelines.
+                        </label>
+                    </div>
+                    <div class="error-message" id="termsError"></div>
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" 
+                               id="anonymous" 
+                               name="anonymous">
+                        <label for="anonymous" class="form-label">
+                            Submit anonymously (your name will not be displayed)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <span id="btnText">Submit Review</span>
+                <span id="loadingSpinner" style="display: none;">Submitting...</span>
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 30px; color: #7f8c8d; font-size: 0.9rem;">
+            <p>All reviews are moderated before publication to ensure quality and authenticity.</p>
+        </div>
+    </div>
+
+    <script>
+        // Star rating functionality
+        const stars = document.querySelectorAll('.star');
+        const ratingValue = document.getElementById('ratingValue');
+        const ratingText = document.getElementById('ratingText');
+        
+        const ratingTexts = {
+            1: 'Poor - 1 star',
+            2: 'Fair - 2 stars',
+            3: 'Good - 3 stars',
+            4: 'Very Good - 4 stars',
+            5: 'Excellent - 5 stars'
+        };
+        
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                const value = parseInt(this.getAttribute('data-value'));
+                ratingValue.value = value;
+                ratingText.textContent = ratingTexts[value];
+                
+                // Update star display
+                stars.forEach(s => {
+                    const starValue = parseInt(s.getAttribute('data-value'));
+                    s.classList.toggle('active', starValue <= value);
+                });
+            });
+        });
+
+        // Form validation and AJAX submission
+        const form = document.getElementById('reviewForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Basic validation
+            let isValid = true;
+            const requiredFields = ['name', 'email', 'comment', 'terms'];
+            
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                const errorElement = document.getElementById(fieldId + 'Error');
+                
+                if (!field.value.trim()) {
+                    field.classList.add('is-invalid');
+                    errorElement.textContent = 'This field is required';
+                    errorElement.classList.add('show');
+                    isValid = false;
+                } else {
+                    field.classList.remove('is-invalid');
+                    errorElement.classList.remove('show');
+                }
+            });
+            
+            // Email validation
+            const emailField = document.getElementById('email');
+            const emailError = document.getElementById('emailError');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (emailField.value && !emailRegex.test(emailField.value)) {
+                emailField.classList.add('is-invalid');
+                emailError.textContent = 'Please enter a valid email address';
+                emailError.classList.add('show');
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            loadingSpinner.style.display = 'inline';
+            
+            try {
+                const formData = new FormData(form);
+                
+                const response = await fetch('{% url "submit_review" %}', {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Show success message
+                    alert(result.message);
+                    form.reset();
+                    // Reset stars
+                    ratingValue.value = '5';
+                    ratingText.textContent = 'Excellent - 5 stars';
+                    stars.forEach((star, index) => {
+                        star.classList.toggle('active', index === 0);
+                    });
+                } else {
+                    // Show form errors
+                    if (result.errors) {
+                        Object.keys(result.errors).forEach(field => {
+                            const errorElement = document.getElementById(field + 'Error');
+                            if (errorElement) {
+                                const fieldElement = document.getElementById(field);
+                                fieldElement.classList.add('is-invalid');
+                                errorElement.textContent = result.errors[field][0];
+                                errorElement.classList.add('show');
+                            }
+                        });
+                    }
+                    alert('Please correct the errors in the form.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                btnText.style.display = 'inline';
+                loadingSpinner.style.display = 'none';
+            }
+        });
+
+        // Real-time validation
+        const fieldsToValidate = ['name', 'email', 'comment'];
+        fieldsToValidate.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            const errorElement = document.getElementById(fieldId + 'Error');
+            
+            field.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    this.classList.remove('is-invalid');
+                    errorElement.classList.remove('show');
+                }
+                
+                // Additional email validation
+                if (fieldId === 'email' && this.value) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(this.value)) {
+                        this.classList.add('is-invalid');
+                        errorElement.textContent = 'Please enter a valid email address';
+                        errorElement.classList.add('show');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

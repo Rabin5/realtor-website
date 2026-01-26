@@ -1,0 +1,44 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+.custom-admin-links {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+.custom-admin-links h2 {
+    margin-top: 0;
+}
+.custom-link {
+    display: inline-block;
+    background: #417690;
+    color: white;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+.custom-link:hover {
+    background: #305067;
+    color: white;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Custom Links Section -->
+<div class="custom-admin-links">
+    <h2>📊 Quick Actions</h2>
+    <a href="{% url 'admin:listings_listing_add' %}" class="custom-link">➕ Add New Listing</a>
+    <a href="{% url 'admin:listings_listing_changelist' %}?status__exact=draft" class="custom-link">📝 Draft Listings</a>
+    <a href="{% url 'admin:listings_listing_changelist' %}?featured__exact=1" class="custom-link">⭐ Featured Listings</a>
+    <a href="/" class="custom-link" target="_blank">🌐 View Website</a>
+</div>
+
+{{ block.super }}
+{% endblock %}

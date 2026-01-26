@@ -1,0 +1,44 @@
+{# mortgage_calculator/templates/mortgage_calculator/widget.html #}
+{% load static %}
+<link rel="stylesheet" href="{% static 'mortgage_calculator/mortgage.css' %}">
+
+<div class="mc-card" data-mc-endpoint="{% url 'mortgage_calculator:calc_api' %}">
+  <h3>Mortgage Calculator</h3>
+
+  <label>Loan Amount</label>
+  <input class="mc-principal" type="number" value="300000" step="1000">
+
+  <label>Interest Rate (%)</label>
+  <input class="mc-rate" type="number" value="4.99" step="0.01">
+
+  <label>Term (years)</label>
+  <input class="mc-years" type="number" value="30" step="1">
+
+  <button class="mc-btn" type="button">Calculate</button>
+
+  <div class="mc-result">
+    Monthly Payment: $<span class="mc-payment">0.00</span>
+  </div>
+  <div class="mc-error"></div>
+</div>
+
+<script>
+  // Make CSRF available to JS (standard Django approach via cookie)
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  window.MC_CSRF_TOKEN = getCookie('csrftoken');
+</script>
+
+<script src="{% static 'mortgage_calculator/mortgage.js' %}"></script>

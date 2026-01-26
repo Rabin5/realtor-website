@@ -1,0 +1,279 @@
+<!-- listings/templates/listings/profile.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Luxury Homes</title>
+    <link rel="stylesheet" href="{% static 'listings/css/info.css' %}">
+    <link rel="stylesheet" href="{% static 'listings/css/info1.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(30, 58, 138, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo i {
+            font-size: 2.5rem;
+            color: #1E3A8A;
+        }
+        
+        .logo h1 {
+            color: #1E3A8A;
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        
+        .nav-links a {
+            color: #1E3A8A;
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 10px 20px;
+            background: rgba(30, 58, 138, 0.1);
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(30, 58, 138, 0.2);
+        }
+        
+        .profile-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            box-shadow: 0 10px 25px rgba(30, 58, 138, 0.3);
+        }
+        
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .info-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .info-label {
+            color: #6B7280;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            color: #1E3A8A;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .admin-badge {
+            background: linear-gradient(135deg, #F97316 0%, #fb923c 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .btn-logout {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #dc3545 0%, #e35d6a 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 30px;
+        }
+        
+        .btn-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(220, 53, 69, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .nav-links a {
+                margin: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="glass-card">
+            <div class="header">
+                <div class="logo">
+                    <i class="fas fa-home"></i>
+                    <h1>Luxury Homes</h1>
+                </div>
+                <div class="nav-links">
+                    <a href="{% url 'listings:property_list' %}"><i class="fas fa-home"></i> Home</a>
+                    {% if user.is_staff or user.is_superuser %}
+                    <a href="{% url 'listings:admin_dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="profile-header">
+                <div class="avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h2 style="color: #1E3A8A; margin-bottom: 10px;">{{ user.username }}</h2>
+                <p style="color: #6B7280;">Member since: {{ user.date_joined|date:"F d, Y" }}</p>
+                
+                {% if user.is_staff or user.is_superuser %}
+                <div class="admin-badge">
+                    <i class="fas fa-crown"></i> Administrator
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="profile-grid">
+                <div class="info-card">
+                    <h3 style="color: #1E3A8A; margin-bottom: 25px; font-size: 1.5rem;">
+                        <i class="fas fa-user-circle"></i> Personal Info
+                    </h3>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Username</div>
+                        <div class="info-value">{{ user.username }}</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Email</div>
+                        <div class="info-value">{{ user.email|default:"Not set" }}</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">First Name</div>
+                        <div class="info-value">{{ user.first_name|default:"Not set" }}</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Last Name</div>
+                        <div class="info-value">{{ user.last_name|default:"Not set" }}</div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <h3 style="color: #1E3A8A; margin-bottom: 25px; font-size: 1.5rem;">
+                        <i class="fas fa-cog"></i> Account Details
+                    </h3>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Account Status</div>
+                        <div class="info-value">
+                            {% if user.is_active %}
+                            <span style="color: #10B981;">Active</span>
+                            {% else %}
+                            <span style="color: #dc3545;">Inactive</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Last Login</div>
+                        <div class="info-value">{{ user.last_login|date:"F d, Y H:i"|default:"Never" }}</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Account Type</div>
+                        <div class="info-value">
+                            {% if user.is_superuser %}
+                            Super Administrator
+                            {% elif user.is_staff %}
+                            Staff Member
+                            {% else %}
+                            Regular User
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="{% url 'listings:logout' %}" class="btn-logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+</body>
+</html>
