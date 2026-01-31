@@ -1680,12 +1680,12 @@ a.cta-button[href*="property_list"]:hover {
             </div>
             
             <div class="agent-contact">
-                <button class="contact-button contact-primary">
+                <a href="tel:+1(832)4202131" class="contact-button contact-primary">
                     <i class="fas fa-phone"></i> Call Raja
-                </button>
-                <button class="contact-button contact-secondary">
-                    <i class="fas fa-envelope"></i> Email Raja
-                </button>
+                </a>
+                <a href="mailto:energyrajaram@gmail.com" class="contact-button contact-primary">
+                    <i class="fas fa-envelope"></i> Email Raja Ram
+                </a>
             </div>
         </div>
     </div>
@@ -1962,18 +1962,15 @@ a.cta-button[href*="property_list"]:hover {
                         <span class="label-text">Experience Type</span>
                     </label>
                     <div class="category-select">
-                        <select name="category" id="id_category" class="form-select">
-                            <option value="">Select your experience type</option>
-                            <option value="home_purchase">Home Purchase</option>
-                            <option value="first_time_buyer">First Time Home Buyer</option>
-                            <option value="property_sale">Property Sale</option>
-                            <option value="va_loan">VA Loan Assistance</option>
-                            <option value="military">Military Relocation</option>
-                            <option value="investment">Investment Property</option>
-                            <option value="rental">Rental Assistance</option>
-                            <option value="consultation">Real Estate Consultation</option>
-                            <option value="other">Other</option>
-                        </select>
+                   <select name="category" id="id_category" class="form-select">
+                        <option value="">Select your experience type</option>
+                        <option value="buying">Home Purchase</option>
+                        <option value="selling">Property Sale</option>
+                        <option value="military">Military Relocation</option>
+                        <option value="first_time">First Time Home Buyer</option>
+                        <option value="investment">Investment Property</option>
+                        <option value="general">Real Estate Consultation</option>
+                    </select>
                         <i class="fas fa-chevron-down select-arrow"></i>
                     </div>
                 </div>
@@ -2534,35 +2531,29 @@ class ReviewsManager {
     
     // Submit review form
     // Submit review form
-async submitReview(event) {
+
+    async submitReview(event) {
     event.preventDefault();
-    console.log('📝 ===== SUBMIT REVIEW START =====');
+    console.log('📝 SUBMIT REVIEW START');
     
     const form = event.target;
     const formData = new FormData(form);
     
-    // Log all form data
-    console.log('📋 Form Data:');
+    // Log ALL form data
+    console.log('📋 Form Data Entries:');
     for (let [key, value] of formData.entries()) {
         console.log(`  ${key}: ${value}`);
     }
     
-    // Check required fields
-    const requiredFields = ['name', 'email', 'rating', 'comment'];
-    let missingFields = [];
+    // Check for required fields
+    const required = ['name', 'email', 'rating', 'comment'];
+    let missing = required.filter(field => !formData.get(field));
     
-    requiredFields.forEach(field => {
-        if (!formData.get(field)) {
-            missingFields.push(field);
-        }
-    });
-    
-    if (missingFields.length > 0) {
-        console.error('❌ Missing required fields:', missingFields);
-        this.showToast(`Please fill in: ${missingFields.join(', ')}`, 'error');
+    if (missing.length > 0) {
+        console.error('❌ Missing fields:', missing);
+        alert(`Please fill in: ${missing.join(', ')}`);
         return;
     }
-    
     // Check CSRF token
     const csrfToken = this.getCsrfToken();
     console.log(`🔐 CSRF Token: ${csrfToken ? 'Found' : 'NOT FOUND!'}`);
@@ -2635,6 +2626,8 @@ async submitReview(event) {
     }
     
     console.log('📝 ===== SUBMIT REVIEW END =====');
+    // Add this debug line in your submitReview function
+console.log('🔐 CSRF Token being sent:', this.getCsrfToken());
 }
     // Show form errors
     showFormErrors(form, errors) {
