@@ -166,13 +166,18 @@ GOOGLE_MAPS_API_KEY = config('GOOGLE_MAPS_API_KEY',
 
 # ================= EMAIL CONFIGURATION =================
 
-EMAIL_BACKEND = config('EMAIL_BACKEND', 
-                      default='django.core.mail.backends.smtp.EmailBackend')
-EMAIL_HOST = config('EMAIL_HOST', default='email-smtp.us-east-1.amazonaws.com')
-EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+#EMAIL_BACKEND = config('EMAIL_BACKEND', 
+#                      default='django.core.mail.backends.smtp.EmailBackend')
+#EMAIL_HOST = config('EMAIL_HOST', default='email-smtp.us-east-1.amazonaws.com')
+EMAIL_HOST = 'smtp.zoho.com'
+#EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+#EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+#EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+#EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='') 
+EMAIL_HOST_USER = '1-8324202131_602@zohomail.com'
+EMAIL_HOST_PASSWORD = 'KnZ1AN9shzPR'
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default=EMAIL_HOST_USER)
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
