@@ -22,6 +22,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS',
                       default='localhost,127.0.0.1,www.realtorrajaram.com,realtorrajaram.com',
                       cast=Csv())
 
+
 # Add CSRF trusted origins for production
 CSRF_TRUSTED_ORIGINS = [
     'https://realtorrajaram.com',
@@ -169,6 +170,10 @@ GOOGLE_MAPS_API_KEY = config('GOOGLE_MAPS_API_KEY',
 #EMAIL_BACKEND = config('EMAIL_BACKEND', 
 #                      default='django.core.mail.backends.smtp.EmailBackend')
 #EMAIL_HOST = config('EMAIL_HOST', default='email-smtp.us-east-1.amazonaws.com')
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# Local testing only
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 EMAIL_HOST = 'smtp.zoho.com'
 #EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
 EMAIL_PORT = 587
