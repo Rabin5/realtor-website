@@ -171,9 +171,6 @@ GOOGLE_MAPS_API_KEY = config('GOOGLE_MAPS_API_KEY',
 #                      default='django.core.mail.backends.smtp.EmailBackend')
 #EMAIL_HOST = config('EMAIL_HOST', default='email-smtp.us-east-1.amazonaws.com')
 #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# Local testing only
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 EMAIL_HOST = 'smtp.zoho.com'
 #EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
 EMAIL_PORT = 587
