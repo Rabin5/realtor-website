@@ -1,5 +1,3 @@
-// mortgage-calculator.js - Mortgage calculator functionality
-
 document.addEventListener('DOMContentLoaded', function() {
     // Elements
     const mortgageModal = document.getElementById('mortgageModal');
@@ -8,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Input elements
     const mcPrincipal = document.getElementById('mcPrincipal');
+    const mcDownPayment = document.getElementById('mcDownPayment'); // New
     const mcRate = document.getElementById('mcRate');
     const mcYears = document.getElementById('mcYears');
     const mcTax = document.getElementById('mcTax');
@@ -23,13 +22,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const mcTotalInterest = document.getElementById('mcTotalInterest');
     const mcMonths = document.getElementById('mcMonths');
     
-    // Initialize if elements exist
     if (!mortgageModal) {
         console.warn('Mortgage calculator modal not found');
         return;
     }
     
-    // Mortgage calculation function
     function calculateMortgage() {
         if (!mcPrincipal || !mcMonthly) return;
         
@@ -37,6 +34,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Get values
         const principal = parseFloat(mcPrincipal.value) || 0;
+        const downPayment = parseFloat(mcDownPayment ? mcDownPayment.value : 0) || 0;
+        const loanAmount = principal - downPayment; // Loan after down payment
+        
         const rate = parseFloat(mcRate.value) || 0;
         const years = parseInt(mcYears.value) || 30;
         const tax = parseFloat(mcTax ? mcTax.value : 0) || 0;
@@ -44,26 +44,24 @@ document.addEventListener('DOMContentLoaded', function() {
         const pmi = parseFloat(mcPMI ? mcPMI.value : 0) || 0;
         const hoa = parseFloat(mcHOA ? mcHOA.value : 0) || 0;
         
-        // Validation
-        if (principal <= 0 || rate <= 0) {
+        if (loanAmount <= 0 || rate <= 0) {
             mcError.textContent = 'Please enter valid principal and interest rate values.';
             return;
         }
         
-        // Calculate monthly interest rate
         const monthlyRate = rate / 100 / 12;
         const months = years * 12;
         
-        // Calculate principal + interest
+        // Principal + interest
         let monthlyPI = 0;
         if (monthlyRate === 0) {
-            monthlyPI = principal / months;
+            monthlyPI = loanAmount / months;
         } else {
-            monthlyPI = principal * monthlyRate * Math.pow(1 + monthlyRate, months) / 
-                       (Math.pow(1 + monthlyRate, months) - 1);
+            monthlyPI = loanAmount * monthlyRate * Math.pow(1 + monthlyRate, months) / 
+                        (Math.pow(1 + monthlyRate, months) - 1);
         }
         
-        // Add other monthly costs
+        // Other monthly costs
         const monthlyTax = tax / 12;
         const monthlyInsurance = insurance / 12;
         const monthlyPMI = pmi / 12;
@@ -71,9 +69,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const totalMonthly = monthlyPI + monthlyTax + monthlyInsurance + monthlyPMI + monthlyHOA;
         
-        // Calculate totals
         const totalPaid = totalMonthly * months;
-        const totalInterest = (monthlyPI * months) - principal;
+        const totalInterest = (monthlyPI * months) - loanAmount;
         
         // Update UI
         mcMonthly.textContent = totalMonthly.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -82,26 +79,20 @@ document.addEventListener('DOMContentLoaded', function() {
         if (mcMonths) mcMonths.textContent = months;
     }
     
-    // Open mortgage modal
+    // Open modal
     function openMortgageModal(principal = null) {
-        if (principal && mcPrincipal) {
-            mcPrincipal.value = principal;
-        }
-        
+        if (principal && mcPrincipal) mcPrincipal.value = principal;
         mortgageModal.style.display = 'block';
         document.body.style.overflow = 'hidden';
-        
-        // Calculate initial values
         calculateMortgage();
     }
     
-    // Close mortgage modal
+    // Close modal
     function closeMortgageModalFunc() {
         mortgageModal.style.display = 'none';
         document.body.style.overflow = 'auto';
     }
     
-    // Event listeners for mortgage triggers
     if (mortgageTriggers.length > 0) {
         mortgageTriggers.forEach(trigger => {
             trigger.addEventListener('click', function(e) {
@@ -112,28 +103,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Close button event
-    if (closeMortgageModal) {
-        closeMortgageModal.addEventListener('click', closeMortgageModalFunc);
-    }
+    if (closeMortgageModal) closeMortgageModal.addEventListener('click', closeMortgageModalFunc);
     
-    // Close modal when clicking outside
     mortgageModal.addEventListener('click', function(e) {
-        if (e.target === mortgageModal) {
-            closeMortgageModalFunc();
-        }
+        if (e.target === mortgageModal) closeMortgageModalFunc();
     });
     
-    // Calculate button event
-    if (mcCalcBtn) {
-        mcCalcBtn.addEventListener('click', calculateMortgage);
-    }
+    if (mcCalcBtn) mcCalcBtn.addEventListener('click', calculateMortgage);
     
-    // Auto-calculate when inputs change
-    const mortgageInputs = [
-        mcPrincipal, mcRate, mcYears, mcTax, 
-        mcInsurance, mcPMI, mcHOA
-    ];
+    // Inputs auto-calc
+    const mortgageInputs = [mcPrincipal, mcDownPayment, mcRate, mcYears, mcTax, mcInsurance, mcPMI, mcHOA];
     
     mortgageInputs.forEach(input => {
         if (input) {
@@ -142,6 +121,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Initial calculation
     setTimeout(calculateMortgage, 100);
 });
