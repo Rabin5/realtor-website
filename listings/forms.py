@@ -1,5 +1,5 @@
 from django import forms
-from .models import ContactInquiry, Listing, Contact, Review
+from .models import ContactInquiry, Listing, Contact, Review, HomeImage
 
 class ContactForm(forms.ModelForm):
     class Meta:
@@ -221,3 +221,20 @@ class ReviewForm(forms.ModelForm):
                 print(f"Review saved! ID: {review.id}")
             
             return review
+
+
+
+
+class HomeImageForm(forms.ModelForm):
+    class Meta:
+        model = HomeImage
+        fields = ['heading', 'image']
+        widgets = {
+            'heading': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter heading',
+            }),
+            'image': forms.FileInput(attrs={
+                'class': 'form-control',
+            }),
+        }

@@ -5,7 +5,6 @@ from django.urls import reverse
 from django.http import HttpResponse
 import csv
 
-
 from .models import (
     Listing,
     ListingImage,
@@ -21,6 +20,7 @@ from .models import (
     Page,
     PropertyInterest,
     Review,
+    HomeImage,
 )
 
 # ----------------------
@@ -313,6 +313,45 @@ class ReviewAdmin(admin.ModelAdmin):
 
 # Admin site branding
 # ----------------------
+
+
+@admin.register(HomeImage)
+class HomeImageAdmin(admin.ModelAdmin):
+    list_display = ('heading', 'image_preview', 'created_at')
+    list_display_links = ('heading',)
+    search_fields = ('heading',)
+    actions = ['delete_selected']
+
+    fieldsets = (
+        ('Content', {
+            'fields': ('heading',)
+        }),
+        ('Image', {
+            'fields': ('image', 'image_preview_detail'),
+        }),
+    )
+
+    readonly_fields = ('image_preview_detail',)
+
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" width="120" height="70" style="object-fit:cover; border-radius:6px;" />',
+                obj.image.url
+            )
+        return "No image"
+    image_preview.short_description = "Preview"
+
+    def image_preview_detail(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" width="400" style="border-radius:8px; margin-top:8px;" />',
+                obj.image.url
+            )
+        return "No image uploaded yet."
+    image_preview_detail.short_description = "Current Image"
+
+
 admin.site.site_header = 'Veterans Realty Admin'
 admin.site.site_title = 'Veterans Realty CMS'
 admin.site.index_title = 'Content & Listings Administration'
