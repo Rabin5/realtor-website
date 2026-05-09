@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-development-key-change-this')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = True
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', 
                       default='localhost,127.0.0.1,www.realtorrajaram.com,realtorrajaram.com',
@@ -78,6 +78,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',  # this is fine to keep
+
 ]
 
 ROOT_URLCONF = 'realtor_site.urls'
@@ -144,16 +146,26 @@ USE_TZ = True
 # ================= STATIC & MEDIA FILES =================
 
 STATIC_URL = '/static/'
+
+
+# Where Django looks for your static files during development
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    os.path.join(BASE_DIR, 'static'),
 ]
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Where collectstatic dumps everything for production
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+
 
 # WhiteNoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -186,14 +198,14 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 # ================= SECURITY SETTINGS =================
 if not DEBUG:
     # HTTPS/SSL Settings
-    SECURE_SSL_REDIRECT = True
-    SECURE_HSTS_SECONDS = 31536000  # 1 year
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
+    #SECURE_SSL_REDIRECT = True
+    #SECURE_HSTS_SECONDS = 31536000  # 1 year
+    #SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    #SECURE_HSTS_PRELOAD = True
     
     # Cookie Security
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
+    #SESSION_COOKIE_SECURE = True
+    #CSRF_COOKIE_SECURE = True
     CSRF_COOKIE_HTTPONLY = True
     
     # Browser Security
@@ -204,7 +216,21 @@ if not DEBUG:
     # Referrer Policy
     SECURE_REFERRER_POLICY = 'same-origin'
 
-# ================= LOGGING CONFIGURATION =================
+    SECURE_SSL_REDIRECT = False
+    SECURE_HSTS_SECONDS = 0
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+
+# # ================= LOGGING CONFIGURATION =================
+# Disable HTTPS redirects entirely in development
+# SECURE_SSL_REDIRECT = False
+# SECURE_HSTS_SECONDS = 0
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+# SECURE_HSTS_PRELOAD = False
+# SESSION_COOKIE_SECURE = False
+# CSRF_COOKIE_SECURE = False
 
 LOGGING = {
     'version': 1,
