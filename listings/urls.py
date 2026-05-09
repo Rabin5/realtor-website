@@ -27,6 +27,8 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('register/', register_view, name='register'),
     path('logout/', logout_view, name='logout'),
+    #path('front/', logout_view, name='logout'),
+
     
     # 🔒 PROTECTED URLs - Redirect to login if unauthorized
     
@@ -46,6 +48,8 @@ urlpatterns = [
     path('admin-dashboard/', 
          user_passes_test(is_staff_user, login_url='listings:login')(admin_dashboard), 
          name='admin_dashboard'),
+    path('custom-admin/front-image/', views.frontimagechanged, name='frontimagechanged'),
+
     
     # Interest management URLs (Admin only)
     path('interest-dashboard/', 
@@ -107,6 +111,8 @@ urlpatterns = [
     
     # Admin dashboard
     path('admin/reviews/dashboard/', views.admin_review_dashboard, name='admin_review_dashboard'),    
+    path('/front-image/', views.frontimagechanged, name='frontimagechanged'),
+
 ]
 
 

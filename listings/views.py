@@ -13,6 +13,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.mail import BadHeaderError, send_mail
 from django.core.paginator import Paginator
@@ -25,9 +26,10 @@ from django.views.decorators.csrf import csrf_exempt
 
 # Local imports
 from .forms import (ContactForm, ListingSearchForm, ReviewForm, Step1Form,
-                    Step2Form, Step3Form, Step4Form)
-from .models import (AgentProfile, Listing, PropertyInterest, Review,
-                     SectionContent, User)
+                    Step2Form, Step3Form, Step4Form, HomeImageForm)
+from .models import (AgentProfile, Listing, PropertyInterest, Review,HomeImage,
+                     SectionContent, User, HomeImage)
+
 
 
 # ============ HOME VIEW ============
@@ -61,7 +63,8 @@ def home(request):
     section_content = {
         'agent': SectionContent.objects.filter(section='about', is_active=True).first()
     }
-    
+    hero = HomeImage.objects.filter().first()
+
     # PDF Files information
     pdf_files = [
         {
@@ -88,6 +91,7 @@ def home(request):
         total_reviews=Count('id')
     )
 
+
     context = {
         'listings': featured_listings,
         'agent_profile': agent_profile,
@@ -95,7 +99,7 @@ def home(request):
         'pdf_files': pdf_files,
         'featured_reviews': featured_reviews,
         'review_stats': review_stats,
-
+        'hero':hero
     }
     print(featured_listings)
     return render(request, 'listings/info.html', context)
@@ -1181,3 +1185,22 @@ def admin_review_dashboard(request):
         'stats': stats,
     }
     return render(request, 'listings/admin_review_dashboard.html', context)
+
+
+
+
+
+@staff_member_required
+def frontimagechanged(request):
+    hero = HomeImage.objects.first()
+    form = HomeImageForm(instance=hero)
+
+    if request.method == 'POST':
+        form = HomeImageForm(request.POST, request.FILES, instance=hero)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Home page updated successfully!')
+            return redirect('listings:frontimagechanged')
+
+    return render(request, 'listings/frontimg.html', {'form': form, 'hero': hero})
+

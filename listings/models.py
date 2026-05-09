@@ -627,3 +627,20 @@ class Review(models.Model):
     def get_category_display_name(self):
         """Get category display name"""
         return dict(self.REVIEW_CATEGORIES).get(self.category, 'General Experience')
+
+
+
+
+
+class HomeImage(models.Model):
+    heading = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='hero/')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Home Image"
+        verbose_name_plural = "Home Images"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.heading
